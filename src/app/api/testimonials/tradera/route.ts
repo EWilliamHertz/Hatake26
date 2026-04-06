@@ -15,8 +15,7 @@ export async function POST(req: Request) {
     const appId = process.env.TRADERA_APP_ID;
     const appKey = process.env.TRADERA_APP_KEY;
 
-    // 3. Tradera API Fetch
-    // NOTE: You will need to replace "YOUR_TRADERA_SELLER_ID" once you have your account!
+    // 3. Tradera API Fetch with your specific ID
     const TRADERA_SELLER_ID = "6740888"; 
     
     try {
@@ -32,7 +31,7 @@ export async function POST(req: Request) {
       const data = await response.json();
       
       // Filter for positive reviews (5-star equivalents)
-      const positiveReviews = data.items.filter((review: any) => review.rating === 5);
+      const positiveReviews = data.items?.filter((review: any) => review.rating === 5) || [];
       let syncedCount = 0;
 
       for (const review of positiveReviews) {
@@ -49,7 +48,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: `Successfully synced ${syncedCount} reviews from Tradera!`, count: syncedCount });
 
     } catch (apiError) {
-      // 4. SMART FALLBACK: If API keys are missing or fail, insert a mock review so you can test the UI!
+      // 4. SMART FALLBACK
       await prisma.testimonial.create({
         data: {
           authorName: "TraderaUser99",

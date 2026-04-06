@@ -9,7 +9,7 @@ export default function TestimonialsPage() {
     fetch('/api/testimonials')
       .then(res => res.json())
       .then(data => {
-        setTestimonials(data);
+        setTestimonials(Array.isArray(data) ? data : []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -31,7 +31,7 @@ export default function TestimonialsPage() {
                 <div className="flex items-center mb-6">
                   {/* Avatar Placeholder */}
                   <div className="h-12 w-12 bg-slate-300 rounded-full mr-4 flex items-center justify-center text-slate-500 font-bold uppercase">
-                    {t.authorName.charAt(0)}
+                    {t.authorName?.charAt(0) || "U"}
                   </div>
                   <div>
                     <h4 className="font-bold text-lg text-slate-900">{t.authorName}</h4>

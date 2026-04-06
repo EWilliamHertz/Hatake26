@@ -7,16 +7,38 @@ export default function AdminTestimonialsPage() {
   
   const [form, setForm] = useState({ authorName: "", authorRole: "Verified Buyer", content: "" });
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  const fetchTestimonials = async () => {
+    try {
+      const res = await fetch('/api/testimonials');
+      const data = await res.json();
+      setTestimonials(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
     fetchTestimonials();
   }, []);
 
-  const fetchTestimonials = async () => {
-    const res = await fetch('/api/testimonials');
-    const data = await res.json();
-    setTestimonials(data);
-    setLoading(false);
+  const handleTraderaSync = async () => {
+    setIsSyncing(true);
+    try {
+      const res = await fetch('/api/testimonials/tradera', { method: 'POST' });
+      const data = await res.json();
+      if (res.ok) {
+        alert(data.message);
+        fetchTestimonials();
+      } else {
+        alert(`Sync failed: ${data.error}`);
+      }
+    } catch (e) {
+      alert("Network error during sync.");
+    }
+    setIsSyncing(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -49,7 +71,16 @@ export default function AdminTestimonialsPage() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8 text-slate-900">Manage Testimonials</h1>
+      <div className="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-4">
+        <h1 className="text-3xl font-bold text-slate-900">Manage Testimonials</h1>
+        <button 
+          onClick={handleTraderaSync} 
+          disabled={isSyncing}
+          className="bg-[#0055FF] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-sm flex items-center gap-2 disabled:opacity-50 transition"
+        >
+          {isSyncing ? "Syncing..." : "🔄 Sync Tradera Reviews"}
+        </button>
+      </div>
 
       <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-8">
         <h2 className="text-xl font-bold mb-4">{editingId ? "Edit Testimonial" : "Add New Testimonial"}</h2>
@@ -60,7 +91,7 @@ export default function AdminTestimonialsPage() {
               <input type="text" required value={form.authorName} onChange={e => setForm({...form, authorName: e.target.value})} className="w-full border p-2 rounded" placeholder="Johan S." />
             </div>
             <div>
-              <label className="block text-sm font-bold text-slate-700 mb-1">Author Role</label>
+              <label className="block text-sm font-bold text-slate-700 mb-1">Author Role (e.g. Tradera Review)</label>
               <input type="text" required value={form.authorRole} onChange={e => setForm({...form, authorRole: e.target.value})} className="w-full border p-2 rounded" placeholder="Verified Buyer" />
             </div>
           </div>
