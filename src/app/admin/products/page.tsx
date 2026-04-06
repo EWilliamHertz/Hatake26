@@ -359,12 +359,12 @@ export default function AdminProductsPage() {
                   <td className="p-4 font-medium text-slate-900">{product.name}</td>
                   <td className="p-4 text-slate-600">{product.price} SEK</td>
                   <td className="p-4 text-slate-600">
-                    <span className={`px-2 py-1 text-xs rounded-full ${product.isSingle ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}`}>
-                      {product.category}
-                    </span>
-                  </td>
-                  <td className="p-4 font-medium">{product.stock}</td>
-                  <td className="p-4 text-right">
+                    <span className={`px-2 py-1 text-xs rounded-full ${product.isSingle ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}`}>
+                      {product.category}
+                    </span>
+                  </td>
+                  <td className="p-4 font-bold text-slate-900 text-lg">{product.stock}</td>
+                  <td className="p-4 text-right">
                     <button onClick={() => openEditModal(product)} className="text-sm bg-slate-200 hover:bg-slate-300 text-slate-800 px-3 py-1 rounded transition">Edit</button>
                   </td>
                 </tr>
@@ -403,7 +403,7 @@ export default function AdminProductsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-1">Current Stock</label>
-                  <input type="number" value={editingProduct.stock} onChange={e => setEditingProduct({...editingProduct, stock: Number(e.target.value)})} className="w-full border p-2 rounded bg-slate-50 focus:bg-white" />
+                  <input type="number" value={editingProduct.stock} onChange={e => setEditingProduct({...editingProduct, stock: Number(e.target.value)})} className="w-full border p-2 rounded bg-slate-50 focus:bg-white text-slate-900 font-bold" />
                 </div>
               </div>
               
