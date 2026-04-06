@@ -5,10 +5,15 @@ import { useRouter } from "next/navigation";
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ text: "", type: "" });
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setMessage({ text: "", type: "" });
+    
     const res = await fetch("/api/register", {
       method: "POST",
       body: JSON.stringify({ email, password }),
@@ -16,22 +21,18 @@ export default function RegisterPage() {
     });
 
     if (res.ok) {
-      alert("Registration successful! You can now log in.");
-      router.push("/login");
+      setMessage({ text: "Registration successful! Redirecting...", type: "success" });
+      setTimeout(() => router.push("/login"), 1500);
     } else {
-      // Safely handle non-JSON responses (like Next.js HTML crash pages)
       const text = await res.text();
       let errorMessage = "Unknown server error";
-      
       try {
         const data = JSON.parse(text);
         errorMessage = data.error || errorMessage;
-      } catch (e) {
-        console.error("Raw server response:", text);
-        errorMessage = `Server crashed with status: ${res.status}. Check your Cloud Shell terminal logs for the exact error!`;
-      }
+      } catch (e) {}
       
-      alert(`Registration failed: ${errorMessage}`);
+      setMessage({ text: errorMessage, type: "error" });
+      setLoading(false);
     }
   };
 
@@ -39,9 +40,18 @@ export default function RegisterPage() {
     <div className="flex-grow flex items-center justify-center bg-slate-50 py-12 px-4">
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center text-slate-900">Create Account</h1>
-        <input type="email" placeholder="Email" required className="w-full mb-4 p-3 border rounded" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" required className="w-full mb-6 p-3 border rounded" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit" className="w-full bg-slate-900 text-white py-3 rounded hover:bg-slate-800 transition">Register</button>
+        
+        {message.text && (
+          <div className={`mb-4 p-3 rounded text-sm ${message.type === "success" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+            {message.text}
+          </div>
+        )}
+
+        <input type="email" placeholder="Email" required className="w-full mb-4 p-3 border rounded outline-none focus:border-slate-500" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input type="password" placeholder="Password" required className="w-full mb-6 p-3 border rounded outline-none focus:border-slate-500" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <button type="submit" disabled={loading} className="w-full bg-slate-900 text-white py-3 rounded hover:bg-slate-800 transition disabled:opacity-50">
+          {loading ? "Registering..." : "Register"}
+        </button>
       </form>
     </div>
   );
