@@ -14,7 +14,7 @@ export default function CartDrawer() {
   const total = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   
   // ---> IMPORTANT: CHANGE THIS TO YOUR ACTUAL SWISH NUMBER <---
-  const SWISH_NUMBER = "1234567890"; 
+  const SWISH_NUMBER = "1235875737"; 
 
   const handleCheckout = async () => {
     if (!session?.user?.email) {
