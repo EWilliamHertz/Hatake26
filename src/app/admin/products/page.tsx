@@ -255,8 +255,9 @@ export default function AdminProductsPage() {
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-1">Category</label>
                   <p className="text-xs text-slate-500 mb-2">Used to filter items in the shop catalog.</p>
-                  <select value={manualForm.category} onChange={e => setManualForm({...manualForm, category: e.target.value})} className="w-full border p-3 rounded bg-slate-50 focus:bg-white">
+                <select value={manualForm.category} onChange={e => setManualForm({...manualForm, category: e.target.value})} className="w-full border p-3 rounded bg-slate-50 focus:bg-white">
                     <option value="SEALED">Sealed Pokémon Product</option>
+                    <option value="MAGIC">Sealed Magic Product</option>
                     <option value="MERCHANDISE">General Merchandise (Sleeves, Binders)</option>
                   </select>
                 </div>
@@ -409,6 +410,7 @@ export default function AdminProductsPage() {
                 <select value={editingProduct.category} onChange={e => setEditingProduct({...editingProduct, category: e.target.value})} className="w-full border p-2 rounded bg-white">
                   <option value="MTG">MTG Single</option>
                   <option value="SEALED">Sealed Pokémon</option>
+                  <option value="MAGIC">Sealed Magic Product</option>
                   <option value="MERCHANDISE">General Merchandise</option>
                 </select>
               </div>

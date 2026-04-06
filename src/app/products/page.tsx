@@ -92,13 +92,13 @@ const [products, setProducts] = useState<any[]>([]);
         
         {/* Filtering Tabs */}
         <div className="flex gap-4 mb-8 overflow-x-auto pb-2">
-          {['ALL', 'MTG', 'SEALED', 'MERCHANDISE'].map(cat => (
+          {['ALL', 'MTG', 'MAGIC', 'SEALED', 'MERCHANDISE'].map(cat => (
             <button 
               key={cat}
               onClick={() => setFilter(cat)}
               className={`px-4 py-2 rounded shadow-sm transition whitespace-nowrap ${filter === cat ? 'bg-slate-800 text-white' : 'bg-white border text-slate-700 hover:bg-slate-100'}`}
             >
-              {cat === 'ALL' ? 'All Products' : cat === 'MTG' ? 'MTG Singles' : cat === 'SEALED' ? 'Sealed Pokémon' : 'Merchandise'}
+              {cat === 'ALL' ? 'All Products' : cat === 'MTG' ? 'MTG Singles' : cat === 'MAGIC' ? 'Sealed Magic' : cat === 'SEALED' ? 'Sealed Pokémon' : 'Merchandise'}
             </button>
           ))}
         </div>
