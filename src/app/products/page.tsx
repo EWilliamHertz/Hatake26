@@ -2,18 +2,23 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
+import { useCartStore } from '@/store/cartStore';
 
 function ShopContent() {
   const searchParams = useSearchParams();
   const productIdFromUrl = searchParams.get('productId');
 
-  const [products, setProducts] = useState<any[]>([]);
+const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('ALL');
+  const [searchQuery, setSearchQuery] = useState(''); // NEW: Search bar state
   
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
   const [fullImages, setFullImages] = useState<string[]>([]); // Tracks the lazy-loaded gallery
+
+  // Wire up our global cart function
+  const addToCart = useCartStore(state => state.addToCart);
 
   // NEW: Listen for the Escape key to close the modal
   useEffect(() => {
@@ -60,14 +65,30 @@ function ShopContent() {
   }, [productIdFromUrl]);
 
   const filteredProducts = products.filter(p => {
-    if (filter === 'ALL') return true;
-    return p.category === filter;
+    const matchesFilter = filter === 'ALL' || p.category === filter;
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          (p.edition && p.edition.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesFilter && matchesSearch;
   });
 
   return (
     <div className="flex-grow bg-slate-50 py-12 px-4 relative">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8 text-slate-900">All Products</h1>
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+          <h1 className="text-3xl font-bold text-slate-900">All Products</h1>
+          
+          {/* TCG Search Bar */}
+          <div className="relative w-full md:w-96">
+            <input 
+              type="text" 
+              placeholder="Search for Charizard, Black Lotus..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full border border-slate-300 pl-10 pr-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm"
+            />
+            <svg className="w-5 h-5 absolute left-3 top-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </div>
+        </div>
         
         {/* Filtering Tabs */}
         <div className="flex gap-4 mb-8 overflow-x-auto pb-2">
@@ -105,8 +126,31 @@ function ShopContent() {
                 <div className="p-5 flex flex-col flex-grow">
                   <p className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">{product.category}</p>
                   <h3 className="font-bold text-slate-800 text-lg leading-tight mb-2 line-clamp-2">{product.name}</h3>
-                  <div className="mt-auto flex items-center justify-between">
-                    <p className="font-extrabold text-amber-600 text-xl">{product.price.toFixed(2)} SEK</p>
+                  
+                  <div className="mt-auto pt-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="font-extrabold text-amber-600 text-xl">{product.price.toFixed(2)} SEK</p>
+                      <span className={`text-xs font-bold ${product.stock > 0 ? 'text-green-600' : 'text-red-500'}`}>
+                        {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                      </span>
+                    </div>
+                    
+                    {/* Quick Add To Cart Button */}
+                    <button 
+                      disabled={product.stock === 0}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevents the modal from opening when clicking the cart button!
+                        addToCart({
+                          id: product.id,
+                          name: product.name,
+                          price: product.price,
+                          imageUrl: product.imageUrl
+                        });
+                      }}
+                      className="w-full bg-slate-100 hover:bg-slate-900 hover:text-white text-slate-800 font-bold py-2 rounded-lg transition disabled:opacity-50 disabled:hover:bg-slate-100 disabled:hover:text-slate-800"
+                    >
+                      {product.stock > 0 ? '+ Add to Cart' : 'Sold Out'}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -196,7 +240,14 @@ function ShopContent() {
                 </div>
                 <button 
                   disabled={selectedProduct.stock === 0}
-                  onClick={() => alert(`Added ${selectedProduct.name} to cart!`)}
+                  onClick={() => {
+                    addToCart({
+                      id: selectedProduct.id,
+                      name: selectedProduct.name,
+                      price: selectedProduct.price,
+                      imageUrl: selectedProduct.imageUrl
+                    });
+                  }}
                   className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition disabled:opacity-50 shadow-lg hover:shadow-xl"
                 >
                   {selectedProduct.stock > 0 ? 'Add to Cart' : 'Out of Stock'}

@@ -102,12 +102,27 @@ export default function AdminProductsPage() {
     setImageFiles(prev => prev.filter((_, index) => index !== indexToRemove));
   };
 
-  const convertFileToBase64 = (file: File) => new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = error => reject(error);
-  });
+  // NEW CLOUD UPLOAD FUNCTION
+  const uploadToImgBB = async (file: File) => {
+    // Securely pulls from your .env file
+    const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY; 
+
+    if (!IMGBB_API_KEY) {
+      throw new Error("Missing NEXT_PUBLIC_IMGBB_API_KEY in .env file");
+    }
+    
+    const formData = new FormData();
+    formData.append('image', file);
+    
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+      method: 'POST',
+      body: formData
+    });
+    
+    const data = await res.json();
+    if (!data.success) throw new Error("Image upload failed");
+    return data.data.url; // Returns the clean, fast cloud URL!
+  };
 
   const handleManualSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -119,16 +134,16 @@ export default function AdminProductsPage() {
     setIsUploading(true);
 
     try {
-      // Convert all local files to Base64 strings for database storage
-      const base64Images = await Promise.all(imageFiles.map(img => convertFileToBase64(img.file)));
+      // 1. Upload all local files directly to the Cloud (ImgBB)
+      const cloudImageUrls = await Promise.all(imageFiles.map(img => uploadToImgBB(img.file)));
 
       const apiRes = await fetch('/api/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...manualForm,
-          imageUrl: base64Images[0], // First image is the Thumbnail/Hero
-          images: base64Images.slice(1), // Remaining images go to the gallery
+          imageUrl: cloudImageUrls[0], // First image is the Thumbnail/Hero
+          images: cloudImageUrls.slice(1), // Remaining images go to the gallery
           isSingle: false,
         })
       });
