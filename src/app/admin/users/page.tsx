@@ -1,7 +1,18 @@
 import { prisma } from "@/lib/prisma";
 
+// Define the User type for TypeScript
+interface User {
+  id: string;
+  email: string;
+  role: string;
+  createdAt: Date | string;
+}
+
 export default async function AdminUsersPage() {
-  const users = await prisma.user.findMany({ orderBy: { createdAt: 'desc' } });
+  // Explicitly type the users array
+  const users: User[] = await prisma.user.findMany({ 
+    orderBy: { createdAt: 'desc' } 
+  }) as any;
 
   return (
     <div className="max-w-6xl mx-auto">

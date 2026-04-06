@@ -1,7 +1,21 @@
 import { prisma } from "@/lib/prisma";
 
+// Define the Order type for TypeScript
+interface Order {
+  id: string;
+  orderNumber: number;
+  customerName: string;
+  customerEmail: string;
+  totalValue: number;
+  status: string;
+  createdAt: Date | string;
+}
+
 export default async function AdminOrdersPage() {
-  const orders = await prisma.order.findMany({ orderBy: { createdAt: 'desc' } });
+  // Explicitly type the orders array to satisfy the build check
+  const orders: Order[] = await prisma.order.findMany({ 
+    orderBy: { createdAt: 'desc' } 
+  }) as any;
 
   return (
     <div className="max-w-6xl mx-auto">
