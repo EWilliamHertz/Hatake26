@@ -23,7 +23,8 @@ model Product {
   id          String   @id @default(cuid())
   name        String
   description String?
-  imageUrl    String
+  imageUrl    String   // The primary Thumbnail
+  images      String[] @default([]) // Array of the extra 19 gallery images
   isSingle    Boolean  @default(false) 
   category    String   @default("SEALED") // "MTG", "POKEMON", "MERCHANDISE"
   scryfallId  String?  
