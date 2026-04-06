@@ -4,6 +4,26 @@ import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import React from "react";
 
+// Define interfaces for TypeScript build safety
+interface Order {
+  id: string;
+  orderNumber: number;
+  customerEmail: string;
+  customerName: string;
+  totalValue: number;
+  status: string;
+  createdAt: Date | string;
+}
+
+interface Inquiry {
+  id: string;
+  customerEmail: string;
+  customerName: string;
+  message: string | null;
+  totalValue: number;
+  createdAt: Date | string;
+}
+
 export default async function UserDashboardPage() {
   const session = await getServerSession(authOptions);
   
@@ -11,15 +31,16 @@ export default async function UserDashboardPage() {
     redirect("/login");
   }
 
-  const orders = await prisma.order.findMany({
+  // Explicitly type the results to satisfy Vercel's build checks
+  const orders: Order[] = await prisma.order.findMany({
     where: { customerEmail: session.user.email },
     orderBy: { createdAt: 'desc' }
-  });
+  }) as any;
 
-  const inquiries = await prisma.inquiry.findMany({
+  const inquiries: Inquiry[] = await prisma.inquiry.findMany({
     where: { customerEmail: session.user.email },
     orderBy: { createdAt: 'desc' }
-  });
+  }) as any;
 
   return (
     <div className="flex-grow bg-slate-50 py-12 px-4">
