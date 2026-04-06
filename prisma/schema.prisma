@@ -56,3 +56,11 @@ model Inquiry {
   status        String   @default("PENDING") // PENDING, REVIEWED, COMPLETED
   createdAt     DateTime @default(now())
 }
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  authorName  String
+  authorRole  String   @default("Verified Buyer")
+  content     String
+  createdAt   DateTime @default(now())
+}
