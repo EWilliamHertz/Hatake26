@@ -35,7 +35,7 @@ export default function AdminProductsPage() {
       if (!res.ok) throw new Error("Card not found");
       const card = await res.json();
 
-      await fetch('/api/products', {
+      const apiRes = await fetch('/api/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -50,12 +50,18 @@ export default function AdminProductsPage() {
         })
       });
 
+      if (!apiRes.ok) {
+        const errorData = await apiRes.json();
+        throw new Error(errorData.error || "Failed to save product to database");
+      }
+
       setSetCode("");
       setCollectorNumber("");
       fetchProducts();
       alert(`Successfully added ${card.name}!`);
     } catch (error) {
-      alert("Failed to find card on Scryfall. Check Set Code and Number.");
+      console.error("Scryfall error:", error);
+      alert(`Failed: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
     setFetchingScryfall(false);
   };
@@ -100,7 +106,7 @@ export default function AdminProductsPage() {
       // Convert all local files to Base64 strings for database storage
       const base64Images = await Promise.all(imageFiles.map(img => convertFileToBase64(img.file)));
 
-      await fetch('/api/products', {
+      const apiRes = await fetch('/api/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -111,6 +117,11 @@ export default function AdminProductsPage() {
         })
       });
 
+      if (!apiRes.ok) {
+        const errorData = await apiRes.json();
+        throw new Error(errorData.error || "Failed to save product to database");
+      }
+
       // Reset everything after success
       setManualForm({ name: "", edition: "", description: "", stock: 1, price: 0, category: "SEALED" });
       setImageFiles([]);
@@ -118,7 +129,8 @@ export default function AdminProductsPage() {
       fetchProducts();
       alert("Product added successfully!");
     } catch (error) {
-      alert("Failed to upload product. Images might be too large.");
+      console.error("Product submission error:", error);
+      alert(`Failed to upload product: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
     
     setIsUploading(false);
