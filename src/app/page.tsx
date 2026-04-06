@@ -232,7 +232,7 @@ function FeaturedProducts({ products }: { products: Product[] }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featured.map(product => (
-            <Link key={product.id} href={`/p<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featured.map(product => (
             <Link key={product.id} href={`/products?productId=${product.id}`}>
               <div className="bg-slate-50 rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden group cursor-pointer h-full flex flex-col">roducts/${product.id}`}>
