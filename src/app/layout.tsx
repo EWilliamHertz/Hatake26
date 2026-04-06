@@ -1,5 +1,4 @@
 "use client";
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
@@ -18,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <Provider>
-          <NavWrapper children={children} />
+          <NavWrapper>{children}</NavWrapper>
         </Provider>
       </body>
     </html>
@@ -49,12 +48,12 @@ function NavWrapper({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center space-x-4 text-sm font-medium">
             {status === "loading" ? (
-              <span>Loading...</span>
+              <span className="text-slate-500">...</span>
             ) : session ? (
               <>
                 <span className="text-slate-300 mr-2">Hello {session.user?.email}</span>
                 {isAdmin && (
-                  <Link href="/admin" className="bg-yellow-500 text-slate-900 px-4 py-2 rounded font-bold hover:bg-yellow-400 transition shadow-sm">
+                  <Link href="/admin" className="bg-yellow-500 text-slate-900 px-4 py-1 rounded font-bold hover:bg-yellow-400 transition shadow-sm">
                     Dashboard
                   </Link>
                 )}

@@ -41,8 +41,8 @@ export default function LoginPage() {
           </div>
         )}
 
-        <input type="email" placeholder="Email" required className="w-full mb-4 p-3 border rounded outline-none focus:border-slate-500" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" required className="w-full mb-6 p-3 border rounded outline-none focus:border-slate-500" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input type="email" placeholder="Email" required className="w-full mb-4 p-3 border rounded outline-none focus:ring-1 focus:ring-slate-400" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input type="password" placeholder="Password" required className="w-full mb-6 p-3 border rounded outline-none focus:ring-1 focus:ring-slate-400" value={password} onChange={(e) => setPassword(e.target.value)} />
         <button type="submit" disabled={loading} className="w-full bg-slate-900 text-white py-3 rounded hover:bg-slate-800 transition disabled:opacity-50">
           {loading ? "Logging in..." : "Login"}
         </button>

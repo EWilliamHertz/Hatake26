@@ -14,24 +14,28 @@ export default function RegisterPage() {
     setLoading(true);
     setMessage({ text: "", type: "" });
     
-    const res = await fetch("/api/register", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-      headers: { "Content-Type": "application/json" },
-    });
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: { "Content-Type": "application/json" },
+      });
 
-    if (res.ok) {
-      setMessage({ text: "Registration successful! Redirecting...", type: "success" });
-      setTimeout(() => router.push("/login"), 1500);
-    } else {
-      const text = await res.text();
-      let errorMessage = "Unknown server error";
-      try {
-        const data = JSON.parse(text);
-        errorMessage = data.error || errorMessage;
-      } catch (e) {}
-      
-      setMessage({ text: errorMessage, type: "error" });
+      if (res.ok) {
+        setMessage({ text: "Registration successful! Redirecting...", type: "success" });
+        setTimeout(() => router.push("/login"), 1500);
+      } else {
+        const text = await res.text();
+        let errorMessage = "Registration failed";
+        try {
+          const data = JSON.parse(text);
+          errorMessage = data.error || errorMessage;
+        } catch (e) {}
+        setMessage({ text: errorMessage, type: "error" });
+        setLoading(false);
+      }
+    } catch (err) {
+      setMessage({ text: "Network error. Please try again.", type: "error" });
       setLoading(false);
     }
   };
@@ -47,8 +51,8 @@ export default function RegisterPage() {
           </div>
         )}
 
-        <input type="email" placeholder="Email" required className="w-full mb-4 p-3 border rounded outline-none focus:border-slate-500" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" required className="w-full mb-6 p-3 border rounded outline-none focus:border-slate-500" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input type="email" placeholder="Email" required className="w-full mb-4 p-3 border rounded outline-none focus:ring-1 focus:ring-slate-400" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input type="password" placeholder="Password" required className="w-full mb-6 p-3 border rounded outline-none focus:ring-1 focus:ring-slate-400" value={password} onChange={(e) => setPassword(e.target.value)} />
         <button type="submit" disabled={loading} className="w-full bg-slate-900 text-white py-3 rounded hover:bg-slate-800 transition disabled:opacity-50">
           {loading ? "Registering..." : "Register"}
         </button>
