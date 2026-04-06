@@ -17,6 +17,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <title>Hatake KB</title>
+        <link rel="icon" href="/logo.png" sizes="any" />
+      </head>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <Provider>
           <NavWrapper>{children}</NavWrapper>

@@ -392,35 +392,39 @@ export default function AdminProductsPage() {
             <h2 className="text-2xl font-bold mb-4 text-slate-800">Edit Product</h2>
             <form onSubmit={handleEditSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-bold text-slate-700">Name</label>
-                <input type="text" value={editingProduct.name} onChange={e => setEditingProduct({...editingProduct, name: e.target.value})} className="w-full border p-2 rounded" />
+                <label className="block text-sm font-bold text-slate-700 mb-1">Product Name</label>
+                <input type="text" value={editingProduct.name} onChange={e => setEditingProduct({...editingProduct, name: e.target.value})} className="w-full border p-2 rounded bg-slate-50 focus:bg-white" />
               </div>
+              
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700">Price (SEK)</label>
-                  <input type="number" value={editingProduct.price} onChange={e => setEditingProduct({...editingProduct, price: Number(e.target.value)})} className="w-full border p-2 rounded" />
+                  <label className="block text-sm font-bold text-slate-700 mb-1">Price (SEK)</label>
+                  <input type="number" value={editingProduct.price} onChange={e => setEditingProduct({...editingProduct, price: Number(e.target.value)})} className="w-full border p-2 rounded bg-slate-50 focus:bg-white" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700">Stock</label>
-                  <input type="number" value={editingProduct.stock} onChange={e => setEditingProduct({...editingProduct, stock: Number(e.target.value)})} className="w-full border p-2 rounded" />
+                  <label className="block text-sm font-bold text-slate-700 mb-1">Current Stock</label>
+                  <input type="number" value={editingProduct.stock} onChange={e => setEditingProduct({...editingProduct, stock: Number(e.target.value)})} className="w-full border p-2 rounded bg-slate-50 focus:bg-white" />
                 </div>
               </div>
+              
               <div>
-                <label className="block text-sm font-bold text-slate-700">Category</label>
-                <select value={editingProduct.category} onChange={e => setEditingProduct({...editingProduct, category: e.target.value})} className="w-full border p-2 rounded bg-white">
+                <label className="block text-sm font-bold text-slate-700 mb-1">Product Category</label>
+                <select value={editingProduct.category} onChange={e => setEditingProduct({...editingProduct, category: e.target.value})} className="w-full border p-2 rounded bg-slate-50 focus:bg-white">
                   <option value="MTG">MTG Single</option>
                   <option value="SEALED">Sealed Pokémon</option>
                   <option value="MAGIC">Sealed Magic Product</option>
                   <option value="MERCHANDISE">General Merchandise</option>
                 </select>
               </div>
+
               <div>
-                <label className="block text-sm font-bold text-slate-700">Description</label>
-                <textarea rows={3} value={editingProduct.description || ""} onChange={e => setEditingProduct({...editingProduct, description: e.target.value})} className="w-full border p-2 rounded"></textarea>
+                <label className="block text-sm font-bold text-slate-700 mb-1">Description</label>
+                <textarea rows={4} value={editingProduct.description || ""} onChange={e => setEditingProduct({...editingProduct, description: e.target.value})} className="w-full border p-2 rounded bg-slate-50 focus:bg-white"></textarea>
               </div>
-              <div className="flex justify-end gap-2 pt-4">
-                <button type="button" onClick={() => setEditModalOpen(false)} className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded">Cancel</button>
-                <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save Changes</button>
+
+              <div className="flex justify-end gap-2 pt-4 mt-2 border-t border-slate-100">
+                <button type="button" onClick={() => setEditModalOpen(false)} className="px-4 py-2 text-slate-600 hover:bg-slate-100 font-bold rounded">Cancel</button>
+                <button type="submit" className="px-6 py-2 bg-blue-600 font-bold text-white rounded hover:bg-blue-700 shadow-sm">Save Changes</button>
               </div>
             </form>
           </div>
