@@ -69,12 +69,12 @@ function MainCarousel({ products }: { products: Product[] }) {
 
       {/* Content */}
       <div className="relative z-10 text-center text-white p-8 max-w-2xl">
-        <h1 className="text-6xl font-bold mb-4 tracking-tight">{product?.name}</h1>
-        <p className="text-xl mb-8 text-slate-200">{product?.category}</p>
-        <p className="text-3xl font-bold text-amber-400 mb-8">{product?.price.toFixed(2)} SEK</p>
+        <h1 className="text-6xl font-bold mb-4 tracking-tight drop-shadow-lg">{product?.name}</h1>
+        <p className="text-xl mb-8 text-slate-200 drop-shadow-md">{product?.category}</p>
+        <p className="text-4xl font-bold text-amber-400 mb-8 drop-shadow-md">{product?.price.toFixed(2)} SEK</p>
         <Link
-          href={`/products/${product?.id}`}
-          className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-8 rounded-lg transition-colors"
+          href={`/products?productId=${product?.id}`}
+          className="inline-block bg-amber-600 hover:bg-amber-500 text-slate-900 font-extrabold py-3 px-8 rounded-lg transition shadow-[0_0_15px_rgba(217,119,6,0.5)] hover:shadow-[0_0_25px_rgba(217,119,6,0.8)]"
         >
           Shop Now
         </Link>
@@ -174,16 +174,17 @@ function MTGCarousel({ products }: { products: Product[] }) {
         {filteredProducts.map(product => (
           <div
             key={product.id}
-            className="flex-shrink-0 w-80 snap-center group"
+            className="flex-shrink-0 w-64 snap-center group py-4"
           >
-            <Link href={`/products/${product.id}`}>
-              <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
-                <div className="relative h-64 bg-slate-200 overflow-hidden">
+            <Link href={`/products?productId=${product.id}`}>
+              <div className="bg-transparent overflow-hidden cursor-pointer h-full flex flex-col items-center">
+                {/* TCG Card Ratio Container (approx 2.5 x 3.5) */}
+                <div className="relative w-full aspect-[2.5/3.5] rounded-xl overflow-hidden shadow-lg group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-300 border border-slate-700/50">
                   <Image
                     src={product.imageUrl || '/placeholder.png'}
                     alt={product.name}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="object-cover"
                   />
                   {product.stock === 0 && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
@@ -231,7 +232,10 @@ function FeaturedProducts({ products }: { products: Product[] }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featured.map(product => (
-            <Link key={product.id} href={`/products/${product.id}`}>
+            <Link key={product.id} href={`/p<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {featured.map(product => (
+            <Link key={product.id} href={`/products?productId=${product.id}`}>
+              <div className="bg-slate-50 rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden group cursor-pointer h-full flex flex-col">roducts/${product.id}`}>
               <div className="bg-slate-50 rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden group cursor-pointer h-full flex flex-col">
                 <div className="relative h-64 bg-slate-200 overflow-hidden">
                   <Image

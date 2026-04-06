@@ -16,6 +16,10 @@ export default function AdminProductsPage() {
   const [manualForm, setManualForm] = useState({ name: "", edition: "", description: "", stock: 1, price: 0, category: "SEALED" });
   const [imageFiles, setImageFiles] = useState<{ url: string; file: File }[]>([]);
 
+  // Edit State
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<any>(null);
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -134,6 +138,31 @@ export default function AdminProductsPage() {
     }
     
     setIsUploading(false);
+  };
+
+  const openEditModal = (product: any) => {
+    setEditingProduct({ ...product });
+    setEditModalOpen(true);
+  };
+
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`/api/products/${editingProduct.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingProduct)
+      });
+      if (res.ok) {
+        alert("Product updated successfully!");
+        setEditModalOpen(false);
+        fetchProducts();
+      } else {
+        alert("Failed to update product.");
+      }
+    } catch (error) {
+      alert("Error updating product.");
+    }
   };
 
   return (
@@ -284,6 +313,7 @@ export default function AdminProductsPage() {
                 <th className="p-4 font-medium text-slate-600">Price</th>
                 <th className="p-4 font-medium text-slate-600">Type</th>
                 <th className="p-4 font-medium text-slate-600">Stock</th>
+                <th className="p-4 font-medium text-slate-600 text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -300,6 +330,9 @@ export default function AdminProductsPage() {
                     </span>
                   </td>
                   <td className="p-4 font-medium">{product.stock}</td>
+                  <td className="p-4 text-right">
+                    <button onClick={() => openEditModal(product)} className="text-sm bg-slate-200 hover:bg-slate-300 text-slate-800 px-3 py-1 rounded transition">Edit</button>
+                  </td>
                 </tr>
               ))}
               {products.length === 0 && (
@@ -309,6 +342,47 @@ export default function AdminProductsPage() {
               )}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* EDIT MODAL */}
+      {editModalOpen && editingProduct && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6">
+            <h2 className="text-2xl font-bold mb-4 text-slate-800">Edit Product</h2>
+            <form onSubmit={handleEditSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-bold text-slate-700">Name</label>
+                <input type="text" value={editingProduct.name} onChange={e => setEditingProduct({...editingProduct, name: e.target.value})} className="w-full border p-2 rounded" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-bold text-slate-700">Price (SEK)</label>
+                  <input type="number" value={editingProduct.price} onChange={e => setEditingProduct({...editingProduct, price: Number(e.target.value)})} className="w-full border p-2 rounded" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700">Stock</label>
+                  <input type="number" value={editingProduct.stock} onChange={e => setEditingProduct({...editingProduct, stock: Number(e.target.value)})} className="w-full border p-2 rounded" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-slate-700">Category</label>
+                <select value={editingProduct.category} onChange={e => setEditingProduct({...editingProduct, category: e.target.value})} className="w-full border p-2 rounded bg-white">
+                  <option value="MTG">MTG Single</option>
+                  <option value="SEALED">Sealed Pokémon</option>
+                  <option value="MERCHANDISE">General Merchandise</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-slate-700">Description</label>
+                <textarea rows={3} value={editingProduct.description || ""} onChange={e => setEditingProduct({...editingProduct, description: e.target.value})} className="w-full border p-2 rounded"></textarea>
+              </div>
+              <div className="flex justify-end gap-2 pt-4">
+                <button type="button" onClick={() => setEditModalOpen(false)} className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded">Cancel</button>
+                <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save Changes</button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>
