@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     if ((session?.user as any)?.role !== "ADMIN") {
@@ -12,10 +12,13 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 
     const body = await req.json();
     const { name, description, price, stock, category } = body;
+    
+    // NEW: We must await the params object before reading the ID
+    const resolvedParams = await params;
 
     const product = await prisma.product.update({
-      where: { id: params.id },
-      data: { 
+      where: { id: resolvedParams.id },
+        data: { 
         name, 
         description, 
         price: Number(price), 
@@ -31,11 +34,14 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 }
 
 // NEW: Fetch a single product INCLUDING its massive image gallery
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    // NEW: We must await the params object before reading the ID
+    const resolvedParams = await params;
+    
     const product = await prisma.product.findUnique({
-      where: { id: params.id }
-    });
+      where: { id: resolvedParams.id }
+    });    
     return NextResponse.json(product);
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch product gallery" }, { status: 500 });
