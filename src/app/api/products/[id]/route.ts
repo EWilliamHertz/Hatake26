@@ -29,3 +29,15 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     return NextResponse.json({ error: "Failed to update product" }, { status: 500 });
   }
 }
+
+// NEW: Fetch a single product INCLUDING its massive image gallery
+export async function GET(req: Request, { params }: { params: { id: string } }) {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id: params.id }
+    });
+    return NextResponse.json(product);
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to fetch product gallery" }, { status: 500 });
+  }
+}

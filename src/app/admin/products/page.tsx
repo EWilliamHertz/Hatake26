@@ -20,6 +20,18 @@ export default function AdminProductsPage() {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
 
+  // NEW: Listen for Escape key to close either open modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (isModalOpen) setIsModalOpen(false);
+        if (editModalOpen) setEditModalOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isModalOpen, editModalOpen]);
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -203,8 +215,14 @@ export default function AdminProductsPage() {
 
       {/* --- THE LARGE MODAL --- */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="bg-white w-full max-w-4xl rounded-2xl shadow-2xl my-8">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto"
+          onClick={() => setIsModalOpen(false)}
+        >
+          <div 
+            className="bg-white w-full max-w-4xl rounded-2xl shadow-2xl my-8"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-center p-6 border-b border-slate-100">
               <h2 className="text-2xl font-bold text-slate-800">Add Merchandise / Sealed Product</h2>
               <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-red-500 font-bold text-xl px-2">&times;</button>
@@ -347,8 +365,14 @@ export default function AdminProductsPage() {
 
       {/* EDIT MODAL */}
       {editModalOpen && editingProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4"
+          onClick={() => setEditModalOpen(false)}
+        >
+          <div 
+            className="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h2 className="text-2xl font-bold mb-4 text-slate-800">Edit Product</h2>
             <form onSubmit={handleEditSubmit} className="space-y-4">
               <div>

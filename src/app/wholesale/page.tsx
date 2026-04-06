@@ -1,120 +1,160 @@
 "use client";
-import React, { useState } from 'react';
-
-// Mock data: In the next step, we will fetch this directly from Prisma
-const availableProducts = [
-  { id: '1', name: 'Pokémon 151 Booster Bundle', basePrice: 350 },
-  { id: '2', name: 'MTG Outlaws of Thunder Junction Play Booster Box', basePrice: 1500 },
-];
+import { useState, useEffect } from "react";
 
 export default function WholesalePage() {
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState<{ [key: string]: number }>({});
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [loading, setLoading] = useState(false);
+  
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-  const updateQuantity = (id: string, delta: number) => {
+  useEffect(() => {
+    fetch('/api/products')
+      .then(res => res.json())
+      .then(data => {
+        const wholesaleItems = data.filter((p: any) => p.category !== "MTG");
+        setProducts(wholesaleItems);
+        setLoading(false);
+      });
+  }, []);
+
+  const updateQuantity = (productId: string, delta: number) => {
     setCart((prev) => {
-      const current = prev[id] || 0;
+      const current = prev[productId] || 0;
       const next = Math.max(0, current + delta);
-      if (next === 0) {
-        const newCart = { ...prev };
-        delete newCart[id];
-        return newCart;
-      }
-      return { ...prev, [id]: next };
+      const newCart = { ...prev };
+      if (next === 0) delete newCart[productId];
+      else newCart[productId] = next;
+      return newCart;
     });
   };
 
-  const getDiscountMultiplier = (quantity: number) => {
-    if (quantity >= 50) return 0.85; // 15% off
-    if (quantity >= 10) return 0.90; // 10% off
-    return 1; // No discount
-  };
-
-  const calculateTotal = () => {
-    return Object.entries(cart).reduce((total, [id, qty]) => {
-      const product = availableProducts.find(p => p.id === id);
-      if (!product) return total;
-      return total + (product.basePrice * qty * getDiscountMultiplier(qty));
-    }, 0);
-  };
+  const totalValue = Object.entries(cart).reduce((total, [id, qty]) => {
+    const p = products.find((prod) => prod.id === id);
+    return total + (p ? p.price * qty : 0);
+  }, 0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    if (totalValue === 0) return alert("Please add items to your inquiry.");
+    
+    setSubmitting(true);
+    try {
+      const itemsList = Object.entries(cart).map(([id, qty]) => {
+        const p = products.find((prod) => prod.id === id);
+        return { productId: id, name: p?.name, quantity: qty, unitPrice: p?.price };
+      });
 
-    const items = Object.entries(cart).map(([id, quantity]) => {
-      const product = availableProducts.find(p => p.id === id)!;
-      return {
-        productId: id,
-        name: product.name,
-        quantity,
-        basePrice: product.basePrice,
-        discountedPrice: product.basePrice * getDiscountMultiplier(quantity)
-      };
-    });
+      const res = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ customerName: name, customerEmail: email, message, items: itemsList, totalValue }),
+      });
 
-    await fetch('/api/inquiries', {
-      method: 'POST',
-      body: JSON.stringify({
-        customerName: formData.name,
-        customerEmail: formData.email,
-        message: formData.message,
-        totalValue: calculateTotal(),
-        items
-      })
-    });
-
-    setLoading(false);
-    alert('Inquiry sent successfully to Ernst and Patricia!');
-    setCart({});
-    setFormData({ name: '', email: '', message: '' });
+      if (res.ok) setSuccess(true);
+      else alert("Failed to submit inquiry.");
+    } catch (error) {
+      alert("Network error.");
+    }
+    setSubmitting(false);
   };
+
+  if (success) {
+    return (
+      <div className="flex-grow flex items-center justify-center bg-slate-50 p-4">
+        <div className="bg-white p-12 rounded-2xl shadow-lg text-center max-w-lg">
+          <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+          </div>
+          <h2 className="text-3xl font-bold text-slate-900 mb-4">Inquiry Received!</h2>
+          <p className="text-slate-600 mb-8">Thank you for your interest. Our B2B team will review your request and get back to you with custom pricing shortly.</p>
+          <button onClick={() => window.location.reload()} className="text-blue-600 font-bold hover:underline">Submit another inquiry</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-grow bg-slate-50 py-12 px-4">
-      <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-slate-100">
-        <h1 className="text-3xl font-bold mb-4 text-slate-900">Wholesale Builder</h1>
-        <p className="mb-8 text-slate-600">Adjust quantities below. Volume discounts apply automatically.</p>
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        <div className="mb-8 border-b pb-8">
-          {availableProducts.map(product => {
-            const qty = cart[product.id] || 0;
-            const discount = getDiscountMultiplier(qty);
-            return (
-              <div key={product.id} className="flex items-center justify-between py-4 border-b last:border-0">
-                <div>
-                  <h3 className="font-bold text-slate-800">{product.name}</h3>
-                  <p className="text-sm text-slate-500">Base: {product.basePrice} SEK</p>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center border rounded">
-                    <button onClick={() => updateQuantity(product.id, -1)} className="px-3 py-1 bg-slate-100 hover:bg-slate-200">-</button>
-                    <span className="px-4 font-medium">{qty}</span>
-                    <button onClick={() => updateQuantity(product.id, 1)} className="px-3 py-1 bg-slate-100 hover:bg-slate-200">+</button>
+        {/* Left: Product List */}
+        <div className="lg:col-span-2 space-y-6">
+          <h1 className="text-3xl font-bold text-slate-900 mb-2">Wholesale Builder</h1>
+          <p className="text-slate-600 mb-6">Build your bulk order request below. Only sealed and merchandise products are available for wholesale.</p>
+          
+          {loading ? (
+            <p className="text-slate-500">Loading wholesale catalog...</p>
+          ) : (
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+              {products.map((product) => {
+                const qty = cart[product.id] || 0;
+                return (
+                  <div key={product.id} className="flex items-center p-4 border-b border-slate-100 hover:bg-slate-50 transition">
+                    <div className="w-16 h-16 bg-slate-100 rounded flex items-center justify-center mr-4 flex-shrink-0 p-1">
+                      {product.imageUrl ? (
+                        <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain" />
+                      ) : (
+                        <span className="text-[10px] text-slate-400">No Image</span>
+                      )}
+                    </div>
+                    <div className="flex-grow pr-4">
+                      <h3 className="font-bold text-slate-800 text-lg">{product.name}</h3>
+                      <p className="text-slate-500 text-sm">Retail: {product.price.toFixed(2)} SEK | Stock: {product.stock}</p>
+                    </div>
+                    <div className="flex items-center gap-3 bg-slate-100 rounded-lg p-1 border border-slate-200">
+                      <button onClick={() => updateQuantity(product.id, -1)} className="w-8 h-8 flex items-center justify-center bg-white rounded text-slate-600 hover:bg-slate-200 transition font-bold shadow-sm">-</button>
+                      <span className="w-6 text-center font-bold text-slate-900">{qty}</span>
+                      <button onClick={() => updateQuantity(product.id, 1)} className="w-8 h-8 flex items-center justify-center bg-white rounded text-slate-600 hover:bg-slate-200 transition font-bold shadow-sm">+</button>
+                    </div>
                   </div>
-                  <div className="w-24 text-right">
-                    {qty > 0 && <span className="text-green-600 text-sm font-bold ml-2">{(100 - discount * 100).toFixed(0)}% Off</span>}
-                  </div>
-                </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Right: Submission Form */}
+        <div className="lg:col-span-1">
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 sticky top-6">
+            <h2 className="text-xl font-bold text-slate-900 mb-4">Request Summary</h2>
+            <div className="bg-slate-50 p-4 rounded-lg mb-6 border border-slate-100">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-slate-600">Items Selected:</span>
+                <span className="font-bold text-slate-900">{Object.values(cart).reduce((a, b) => a + b, 0)}</span>
               </div>
-            );
-          })}
-          <div className="mt-6 text-right">
-            <p className="text-2xl font-bold text-slate-900">Total Value: {calculateTotal().toFixed(2)} SEK</p>
+              <div className="flex justify-between items-center text-lg border-t pt-2 mt-2">
+                <span className="text-slate-800 font-bold">Est. Retail Value:</span>
+                <span className="font-extrabold text-amber-600">{totalValue.toFixed(2)} SEK</span>
+              </div>
+              <p className="text-[11px] text-slate-500 mt-2 italic text-right">*Wholesale discount applied post-review</p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-1">Company / Full Name</label>
+                <input type="text" required value={name} onChange={e => setName(e.target.value)} className="w-full border p-3 rounded bg-slate-50 focus:bg-white" placeholder="Store Name LLC" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-1">Contact Email</label>
+                <input type="email" required value={email} onChange={e => setEmail(e.target.value)} className="w-full border p-3 rounded bg-slate-50 focus:bg-white" placeholder="you@company.com" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-1">Additional Notes</label>
+                <textarea rows={3} value={message} onChange={e => setMessage(e.target.value)} className="w-full border p-3 rounded bg-slate-50 focus:bg-white" placeholder="We are looking for monthly restocks..."></textarea>
+              </div>
+              
+              <button type="submit" disabled={submitting || totalValue === 0} className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition disabled:opacity-50 shadow-md">
+                {submitting ? "Submitting..." : "Send Wholesale Inquiry"}
+              </button>
+            </form>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <input type="text" required placeholder="Company / Your Name" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="block w-full rounded-md border p-3" />
-            <input type="email" required placeholder="Contact Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="block w-full rounded-md border p-3" />
-          </div>
-          <textarea rows={3} placeholder="Additional Details" value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="block w-full rounded-md border p-3"></textarea>
-          <button type="submit" disabled={loading || Object.keys(cart).length === 0} className="w-full bg-slate-900 text-white py-3 px-4 rounded-md font-medium hover:bg-slate-800 disabled:opacity-50">
-            {loading ? 'Sending...' : 'Submit Inquiry'}
-          </button>
-        </form>
       </div>
     </div>
   );

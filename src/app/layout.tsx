@@ -52,9 +52,13 @@ function NavWrapper({ children }: { children: React.ReactNode }) {
             ) : session ? (
               <>
                 <span className="text-slate-300 mr-2">Hello {session.user?.email}</span>
-                {isAdmin && (
+                {isAdmin ? (
                   <Link href="/admin" className="bg-yellow-500 text-slate-900 px-4 py-1 rounded font-bold hover:bg-yellow-400 transition shadow-sm">
                     Admin Panel
+                  </Link>
+                ) : (
+                  <Link href="/dashboard" className="bg-blue-600 text-white px-4 py-1 rounded font-bold hover:bg-blue-500 transition shadow-sm">
+                    My Dashboard
                   </Link>
                 )}
                 <button onClick={() => signOut({ callbackUrl: '/' })} className="hover:text-slate-300 transition">Logout</button>

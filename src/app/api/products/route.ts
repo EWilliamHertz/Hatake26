@@ -6,7 +6,19 @@ import { getServerSession } from "next-auth";
 export async function GET() {
   try {
     const products = await prisma.product.findMany({
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
+      // Removed the massive 'images' array to make the site lightning fast again!
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        imageUrl: true, 
+        isSingle: true,
+        category: true,
+        edition: true,
+        stock: true,
+        price: true,
+      }
     });
     return NextResponse.json(products);
   } catch (error) {

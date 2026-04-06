@@ -12,6 +12,37 @@ function ShopContent() {
   const [filter, setFilter] = useState('ALL');
   
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+  const [fullImages, setFullImages] = useState<string[]>([]); // Tracks the lazy-loaded gallery
+
+  // NEW: Listen for the Escape key to close the modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && selectedProduct) {
+        setSelectedProduct(null);
+        setCurrentImgIndex(0);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedProduct]);
+
+  const handleProductClick = async (product: any) => {
+    setSelectedProduct(product);
+    setCurrentImgIndex(0);
+    setFullImages([product.imageUrl]); // Instantly show thumbnail
+
+    // Silently fetch the remaining high-res gallery images in the background
+    try {
+      const res = await fetch(`/api/products/${product.id}`);
+      const data = await res.json();
+      if (data.images) {
+        setFullImages([data.imageUrl, ...data.images]);
+      }
+    } catch (e) {
+      console.error("Gallery load failed");
+    }
+  };
 
   useEffect(() => {
     fetch('/api/products')
@@ -23,7 +54,7 @@ function ShopContent() {
         // Auto-open modal if URL parameter exists
         if (productIdFromUrl) {
           const targetProduct = data.find((p: any) => p.id === productIdFromUrl);
-          if (targetProduct) setSelectedProduct(targetProduct);
+          if (targetProduct) handleProductClick(targetProduct);
         }
       });
   }, [productIdFromUrl]);
@@ -57,12 +88,13 @@ function ShopContent() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredProducts.map((product) => (
-              <div key={product.id} className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition cursor-pointer flex flex-col" onClick={() => setSelectedProduct(product)}>
-                <div className="relative h-56 bg-slate-100 flex items-center justify-center p-4">
+              <div key={product.id} className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition cursor-pointer flex flex-col" onClick={() => handleProductClick(product)}>
+                {/* Locked height and flex-shrink-0 prevents millimeter collapsing */}
+                <div className="relative h-56 w-full bg-slate-100 flex-shrink-0 p-4">
                   {product.imageUrl ? (
-                    <Image src={product.imageUrl} alt={product.name} fill className="object-contain p-2" />
+                    <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain" />
                   ) : (
-                    <span className="text-slate-400">No Image</span>
+                    <div className="w-full h-full flex items-center justify-center text-slate-400">No Image</div>
                   )}
                   {product.stock === 0 && (
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-sm">
@@ -84,19 +116,60 @@ function ShopContent() {
         )}
       </div>
 
-      {/* PRODUCT MODAL */}
+      {/* PRODUCT MODAL WITH GALLERY */}
       {selectedProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4">
-          <div className="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row relative animate-in fade-in zoom-in duration-200">
-            <button onClick={() => setSelectedProduct(null)} className="absolute top-4 right-4 z-10 bg-white/50 hover:bg-white rounded-full p-2 text-slate-800 transition">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4 overflow-y-auto"
+          onClick={() => { setSelectedProduct(null); setCurrentImgIndex(0); }}
+        >
+          <div 
+            className="bg-white w-full max-w-5xl rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row relative animate-in fade-in zoom-in duration-200 my-8"
+            onClick={(e) => e.stopPropagation()} // Prevents clicks inside the white box from closing the modal
+          >
+            <button onClick={() => { setSelectedProduct(null); setCurrentImgIndex(0); }} className="absolute top-4 right-4 z-20 bg-slate-100 hover:bg-slate-200 rounded-full p-2 text-slate-800 transition shadow">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             
-            {/* Image Section */}
-            <div className="md:w-1/2 bg-slate-100 relative min-h-[300px] md:min-h-[500px] p-8 flex items-center justify-center">
-               {selectedProduct.imageUrl && (
-                 <Image src={selectedProduct.imageUrl} alt={selectedProduct.name} fill className="object-contain p-4 drop-shadow-xl" />
-               )}
+            {/* Image Gallery Section */}
+            <div className="md:w-1/2 bg-slate-100 relative min-h-[400px] flex flex-col">
+              {/* Main Active Image */}
+              <div className="relative flex-grow flex items-center justify-center p-8">
+                 {/* Left Arrow */}
+                 {fullImages.length > 1 && (
+                   <button onClick={() => setCurrentImgIndex(prev => prev === 0 ? fullImages.length - 1 : prev - 1)} className="absolute left-4 z-10 bg-white/70 hover:bg-white p-2 rounded-full shadow transition">
+                     &#8249;
+                   </button>
+                 )}
+                 
+                 <img 
+                   src={fullImages[currentImgIndex]} 
+                   alt={selectedProduct.name} 
+                   className="w-full h-full max-h-[400px] object-contain drop-shadow-xl transition-all duration-300" 
+                 />
+
+                 {/* Right Arrow */}
+                 {fullImages.length > 1 && (
+                   <button onClick={() => setCurrentImgIndex(prev => prev === fullImages.length - 1 ? 0 : prev + 1)} className="absolute right-4 z-10 bg-white/70 hover:bg-white p-2 rounded-full shadow transition">
+                     &#8250;
+                   </button>
+                 )}
+              </div>
+
+              {/* Thumbnails Strip */}
+              {fullImages.length > 1 && (
+                <div className="bg-slate-200 p-4 flex gap-3 overflow-x-auto">
+                  {fullImages.map((imgUrl: string, idx: number) => (
+                    <button 
+                      key={idx} 
+                      onClick={() => setCurrentImgIndex(idx)}
+                      onMouseEnter={() => setCurrentImgIndex(idx)} 
+                      className={`flex-shrink-0 w-16 h-16 rounded border-2 transition-all overflow-hidden bg-white ${currentImgIndex === idx ? 'border-amber-500 shadow-md scale-105' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                    >
+                      <img src={imgUrl} alt="thumbnail" className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Info Section */}
@@ -105,7 +178,7 @@ function ShopContent() {
               <h2 className="text-3xl font-extrabold text-slate-900 mb-4">{selectedProduct.name}</h2>
               <p className="text-4xl font-bold text-amber-600 mb-6">{selectedProduct.price.toFixed(2)} <span className="text-xl text-slate-500">SEK</span></p>
               
-              <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 mb-8">
+              <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 mb-8 max-h-48 overflow-y-auto">
                 <p className="text-slate-700 leading-relaxed text-sm whitespace-pre-wrap">
                   {selectedProduct.description || "No specific details provided for this item."}
                 </p>

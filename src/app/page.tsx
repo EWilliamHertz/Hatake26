@@ -56,15 +56,24 @@ function MainCarousel({ products }: { products: Product[] }) {
 
   return (
     <header className="relative w-full h-[60vh] bg-slate-900 overflow-hidden flex items-center justify-center">
-      {/* Background Image with Overlay */}
+      {/* Blurred Background Overlay */}
       {product?.imageUrl && (
-        <Image
-          src={product.imageUrl}
-          alt={product.name}
-          fill
-          className="object-cover opacity-30"
-          priority
-        />
+        <div className="absolute inset-0">
+          <img src={product.imageUrl} alt="" className="w-full h-full object-cover opacity-20 blur-3xl" />
+        </div>
+      )}
+      
+      {/* Foreground Crisp Image with CSS White-Background Removal */}
+      {product?.imageUrl && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-8 md:p-16">
+          {/* Invisible glowing orb that allows the multiply blend mode to strip the white JPEG border cleanly */}
+          <div className="absolute w-64 h-64 md:w-[400px] md:h-[400px] bg-white rounded-full blur-[80px] opacity-70"></div>
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            className="relative w-full h-full max-w-md md:max-w-lg object-contain drop-shadow-2xl opacity-95 group-hover:scale-105 transition-transform duration-500 mix-blend-multiply"
+          />
+        </div>
       )}
 
       {/* Content */}
@@ -234,12 +243,11 @@ function FeaturedProducts({ products }: { products: Product[] }) {
           {featured.map(product => (
             <Link key={product.id} href={`/products?productId=${product.id}`}>
               <div className="bg-slate-50 rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden group cursor-pointer h-full flex flex-col">
-                <div className="relative h-64 bg-slate-200 overflow-hidden">
-                  <Image
+                <div className="relative h-64 w-full bg-slate-200 overflow-hidden flex-shrink-0">
+                  <img
                     src={product.imageUrl || '/placeholder.png'}
                     alt={product.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
                 <div className="p-6 flex-grow flex flex-col justify-between">
