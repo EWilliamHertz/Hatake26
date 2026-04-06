@@ -11,8 +11,8 @@ export default function AdminProductsPage() {
   const [collectorNumber, setCollectorNumber] = useState("");
   const [fetchingScryfall, setFetchingScryfall] = useState(false);
 
-  // Manual Form State (Pokémon)
-  const [manualForm, setManualForm] = useState({ name: "", edition: "", imageUrl: "", stock: 1 });
+  // Manual Form State (Pokémon & Merch)
+  const [manualForm, setManualForm] = useState({ name: "", edition: "", imageUrl: "", stock: 1, price: 0, category: "SEALED" });
 
   useEffect(() => {
     fetchProducts();
@@ -68,7 +68,7 @@ export default function AdminProductsPage() {
         isSingle: false,
       })
     });
-    setManualForm({ name: "", edition: "", imageUrl: "", stock: 1 });
+    setManualForm({ name: "", edition: "", imageUrl: "", stock: 1, price: 0, category: "SEALED" });
     fetchProducts();
     alert("Product added successfully!");
   };
@@ -98,20 +98,24 @@ export default function AdminProductsPage() {
           </form>
         </div>
 
-        {/* Manual Addition (Sealed / Pokémon) */}
+        {/* Manual Addition (Sealed / Merch) */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-          <h2 className="text-xl font-bold mb-4 text-slate-800">Add Sealed / Pokémon Product</h2>
+          <h2 className="text-xl font-bold mb-4 text-slate-800">Add General / Sealed Product</h2>
           <form onSubmit={handleManualSubmit} className="space-y-4">
             <div className="flex gap-4">
               <input type="text" placeholder="Product Name" required value={manualForm.name} onChange={e => setManualForm({...manualForm, name: e.target.value})} className="w-full border p-2 rounded flex-2" />
-              <input type="text" placeholder="Edition / Set" value={manualForm.edition} onChange={e => setManualForm({...manualForm, edition: e.target.value})} className="w-full border p-2 rounded flex-1" />
+              <select value={manualForm.category} onChange={e => setManualForm({...manualForm, category: e.target.value})} className="w-full border p-2 rounded flex-1 bg-white">
+                <option value="SEALED">Sealed Pokémon</option>
+                <option value="MERCHANDISE">General Merchandise</option>
+              </select>
             </div>
             <div className="flex gap-4">
-              <input type="url" placeholder="Image URL (Imgur, etc.)" required value={manualForm.imageUrl} onChange={e => setManualForm({...manualForm, imageUrl: e.target.value})} className="w-full border p-2 rounded flex-2" />
-              <input type="number" placeholder="Stock" min="0" required value={manualForm.stock} onChange={e => setManualForm({...manualForm, stock: Number(e.target.value)})} className="w-full border p-2 rounded flex-1" />
+              <input type="url" placeholder="Image URL" required value={manualForm.imageUrl} onChange={e => setManualForm({...manualForm, imageUrl: e.target.value})} className="w-full border p-2 rounded flex-2" />
+              <input type="number" placeholder="Price (SEK)" min="0" required value={manualForm.price} onChange={e => setManualForm({...manualForm, price: Number(e.target.value)})} className="w-full border p-2 rounded flex-1" />
+              <input type="number" placeholder="Stock" min="0" required value={manualForm.stock} onChange={e => setManualForm({...manualForm, stock: Number(e.target.value)})} className="w-full border p-2 rounded w-24" />
             </div>
             <button type="submit" className="w-full bg-slate-900 text-white py-2 rounded hover:bg-slate-800">
-              Add Manual Product
+              Add to Catalog
             </button>
           </form>
         </div>

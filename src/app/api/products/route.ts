@@ -23,10 +23,15 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { name, description, imageUrl, isSingle, scryfallId, edition, stock } = body;
+    const { name, description, imageUrl, isSingle, scryfallId, edition, stock, price, category } = body;
 
     const product = await prisma.product.create({
-      data: { name, description, imageUrl, isSingle, scryfallId, edition, stock: Number(stock) },
+      data: { 
+        name, description, imageUrl, isSingle, scryfallId, edition, 
+        stock: Number(stock), 
+        price: Number(price || 0), 
+        category: category || (isSingle ? "MTG" : "SEALED") 
+      },
     });
 
     return NextResponse.json(product);

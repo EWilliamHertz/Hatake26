@@ -24,12 +24,25 @@ model Product {
   name        String
   description String?
   imageUrl    String
-  isSingle    Boolean  @default(false) // True for MTG singles, False for Sealed
-  scryfallId  String?  // Saved if fetched from Scryfall
+  isSingle    Boolean  @default(false) 
+  category    String   @default("SEALED") // "MTG", "POKEMON", "MERCHANDISE"
+  scryfallId  String?  
   edition     String?
   stock       Int      @default(0)
+  price       Float    @default(0) // Added price for checkout
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Order {
+  id            String   @id @default(cuid())
+  orderNumber   Int      @unique @default(autoincrement()) // Generates the unique Swish code (e.g., 48)
+  customerEmail String
+  customerName  String
+  items         Json     // Array of items bought
+  totalValue    Float
+  status        String   @default("PENDING_PAYMENT") // PENDING_PAYMENT, PROCESSING, COMPLETED, CANCELLED
+  createdAt     DateTime @default(now())
 }
 
 model Inquiry {
