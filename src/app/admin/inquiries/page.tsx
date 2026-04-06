@@ -1,7 +1,20 @@
 import { prisma } from "@/lib/prisma";
 
+// Define the Inquiry type so TypeScript understands the structure
+interface Inquiry {
+  id: string;
+  customerName: string;
+  customerEmail: string;
+  message: string | null;
+  totalValue: number;
+  createdAt: Date | string;
+}
+
 export default async function AdminInquiriesPage() {
-  const inquiries = await prisma.inquiry.findMany({ orderBy: { createdAt: 'desc' } });
+  // Explicitly type the inquiries array
+  const inquiries: Inquiry[] = await prisma.inquiry.findMany({ 
+    orderBy: { createdAt: 'desc' } 
+  }) as any;
 
   return (
     <div className="max-w-6xl mx-auto">
