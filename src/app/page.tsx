@@ -232,10 +232,7 @@ function FeaturedProducts({ products }: { products: Product[] }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featured.map(product => (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featured.map(product => (
             <Link key={product.id} href={`/products?productId=${product.id}`}>
-              <div className="bg-slate-50 rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden group cursor-pointer h-full flex flex-col">roducts/${product.id}`}>
               <div className="bg-slate-50 rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden group cursor-pointer h-full flex flex-col">
                 <div className="relative h-64 bg-slate-200 overflow-hidden">
                   <Image
@@ -366,7 +363,7 @@ export default function Home() {
             </div>
 
             <div>
-              <h3 className="text-white text-lg font-bold mb-4\">Quick Links</h3>
+              <h3 className="text-white text-lg font-bold mb-4">Quick Links</h3>
               <ul className="space-y-2">
                 <li><Link href="/products" className="hover:text-white transition-colors">All Products</Link></li>
                 <li><Link href="/admin" className="hover:text-white transition-colors">Admin Panel</Link></li>
