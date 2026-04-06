@@ -1,10 +1,12 @@
 import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import React from "react";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const session = await getServerSession();
+  // Pass authOptions so the server can read your custom 'role' property
+  const session = await getServerSession(authOptions);
   
   // Security Redirect: Strictly block anyone who is not an admin
   if ((session?.user as any)?.role !== "ADMIN") {

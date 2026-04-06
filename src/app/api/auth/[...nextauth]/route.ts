@@ -1,9 +1,9 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -54,7 +54,12 @@ const handler = NextAuth({
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET || "fallback_secret_for_development", // Add NEXTAUTH_SECRET to your .env later
-});
+  // 1. Hardcoded fallback secret so it never crashes if .env is unread
+  secret: process.env.NEXTAUTH_SECRET || "hatake_super_secret_key_2026_xyz",
+  // 2. Enable debug mode to print EXACT errors to your Cloud Shell terminal
+  debug: true, 
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
