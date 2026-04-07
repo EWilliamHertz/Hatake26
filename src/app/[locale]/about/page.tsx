@@ -111,6 +111,9 @@ export default function About() {
             <p className="text-xl text-slate-400">{t('team.subtitle')}</p>
           </div>
 
+
+          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {/* Ernst-William */}
             <div className="space-y-4">
