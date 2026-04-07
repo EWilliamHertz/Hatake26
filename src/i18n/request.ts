@@ -3,8 +3,8 @@ import { notFound } from 'next/navigation';
 
 const locales = ['en', 'sv'];
 
-export default getRequestConfig(async ({ locale }) => {
-  if (!locales.includes(locale as any)) notFound();
+export default getRequestConfig(async ({ locale }: { locale: string }) => {
+  if (!locales.includes(locale)) notFound();
 
   return {
     locale,
