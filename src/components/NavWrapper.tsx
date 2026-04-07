@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
@@ -9,6 +10,7 @@ import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 
 export default function NavWrapper({ children }: { children: React.ReactNode }) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { data: session, status } = useSession();
   const isAdmin = (session?.user as any)?.role === "ADMIN";
   const t = useTranslations("Navigation");
@@ -155,8 +157,56 @@ export default function NavWrapper({ children }: { children: React.ReactNode }) 
                 </Link>
               </>
             )}
+            
+            {/* Mobile Menu Toggle Hamburger */}
+            <button
+              className="md:hidden ml-2 p-2 text-slate-300 hover:text-white focus:outline-none"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle mobile menu"
+            >
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {isMobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu Panel */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 pt-4 border-t border-slate-700 flex flex-col space-y-4 pb-2">
+            <Link href={`/${currentLocale}`} onClick={() => setIsMobileMenuOpen(false)} className="text-lg hover:text-amber-400 transition">
+              {t("home")}
+            </Link>
+            
+            <div className="flex flex-col space-y-2">
+              <Link href={`/${currentLocale}/products`} onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-bold text-amber-500 hover:text-amber-400 transition">
+                {t("products")} (All)
+              </Link>
+              <div className="flex flex-col pl-4 border-l-2 border-slate-700 space-y-2">
+                <Link href={`/${currentLocale}/products?category=MTG`} onClick={() => setIsMobileMenuOpen(false)} className="text-slate-300 hover:text-amber-400 transition">
+                  • MTG Singles
+                </Link>
+                <Link href={`/${currentLocale}/products?category=SEALED`} onClick={() => setIsMobileMenuOpen(false)} className="text-slate-300 hover:text-amber-400 transition">
+                  • Sealed Products
+                </Link>
+                <Link href={`/${currentLocale}/products?category=MERCHANDISE`} onClick={() => setIsMobileMenuOpen(false)} className="text-slate-300 hover:text-amber-400 transition">
+                  • Merchandise
+                </Link>
+              </div>
+            </div>
+
+            <Link href={`/${currentLocale}/wholesale`} onClick={() => setIsMobileMenuOpen(false)} className="text-lg hover:text-amber-400 transition">
+              {t("wholesale")}
+            </Link>
+            <Link href={`/${currentLocale}/testimonials`} onClick={() => setIsMobileMenuOpen(false)} className="text-lg hover:text-amber-400 transition">
+              {t("testimonials")}
+            </Link>
+          </div>
+        )}
       </nav>
       <CartDrawer />
       {children}
