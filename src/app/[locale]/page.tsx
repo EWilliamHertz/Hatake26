@@ -22,8 +22,8 @@ function MainCarousel({ products }: { products: Product[] }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
   const t = useTranslations();
-  const pathname = usePathname();
-  const currentLocale = pathname.split('/')[1] as string;
+  const pathname = usePathname() || '';
+  const currentLocale = pathname.split('/')[1] || 'sv';
 
   const filteredProducts = products.filter(p => p.category !== 'MTG');
 
@@ -85,7 +85,7 @@ function MainCarousel({ products }: { products: Product[] }) {
       <div className="relative z-10 text-center text-white p-8 max-w-2xl">
         <h1 className="text-6xl font-bold mb-4 tracking-tight drop-shadow-lg">{product?.name}</h1>
         <p className="text-xl mb-8 text-slate-200 drop-shadow-md">{product?.category}</p>
-        <p className="text-4xl font-bold text-amber-400 mb-8 drop-shadow-md">{product?.price.toFixed(2)} SEK</p>
+        <p className="text-4xl font-bold text-amber-400 mb-8 drop-shadow-md">{Number(product?.price || 0).toFixed(2)} SEK</p>
         <Link
           href={`/${currentLocale}/products?productId=${product?.id}`}
           className="inline-block bg-amber-600 hover:bg-amber-500 text-slate-900 font-extrabold py-3 px-8 rounded-lg transition shadow-[0_0_15px_rgba(217,119,6,0.5)] hover:shadow-[0_0_25px_rgba(217,119,6,0.8)]"
@@ -149,8 +149,8 @@ function MTGCarousel({ products }: { products: Product[] }) {
   const [scrollPosition, setScrollPosition] = useState(0);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const t = useTranslations();
-  const pathname = usePathname();
-  const currentLocale = pathname.split('/')[1] as string;
+  const pathname = usePathname() || '';
+  const currentLocale = pathname.split('/')[1] || 'sv';
 
   const filteredProducts = products.filter(
     p => p.category === 'MTG' || p.isSingle === true
@@ -215,7 +215,7 @@ function MTGCarousel({ products }: { products: Product[] }) {
                     <h3 className="text-lg font-bold text-slate-900 line-clamp-2 mb-2">{product.name}</h3>
                   </div>
                   <div className="flex justify-between items-end">
-                    <p className="text-xl font-bold text-amber-600">{product.price.toFixed(2)} SEK</p>
+                    <p className="text-xl font-bold text-amber-600">{Number(product.price || 0).toFixed(2)} SEK</p>
                     <p className="text-sm text-slate-500">
                       {product.stock > 0 ? `${product.stock} ${t('Shop.price')}` : t('Shop.outOfStock')}
                     </p>
@@ -233,8 +233,8 @@ function MTGCarousel({ products }: { products: Product[] }) {
 // Featured Products Grid
 function FeaturedProducts({ products }: { products: Product[] }) {
   const t = useTranslations();
-  const pathname = usePathname();
-  const currentLocale = pathname.split('/')[1] as string;
+  const pathname = usePathname() || '';
+  const currentLocale = pathname.split('/')[1] || 'sv';
 
   const featured = products
     .filter(p => p.stock > 0)
@@ -270,7 +270,7 @@ function FeaturedProducts({ products }: { products: Product[] }) {
                     <h3 className="text-xl font-bold text-slate-900 mb-2 line-clamp-2">{product.name}</h3>
                   </div>
                   <div className="flex justify-between items-end pt-4 border-t border-slate-200">
-                    <p className="text-2xl font-bold text-amber-600">{product.price.toFixed(2)} SEK</p>
+                    <p className="text-2xl font-bold text-amber-600">{Number(product.price || 0).toFixed(2)} SEK</p>
                     <span className="text-sm font-semibold text-green-600">In Stock</span>
                   </div>
                 </div>
@@ -289,8 +289,8 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const t = useTranslations();
-  const pathname = usePathname();
-  const currentLocale = pathname.split('/')[1] as string;
+  const pathname = usePathname() || '';
+  const currentLocale = pathname.split('/')[1] || 'sv';
 
   useEffect(() => {
     const fetchProducts = async () => {
