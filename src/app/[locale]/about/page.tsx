@@ -116,7 +116,7 @@ export default function About() {
             <div className="space-y-4">
               <div className="relative w-full aspect-square mb-6 rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
                 <Image
-                  src="/team/ernst.jpg"
+                  src="/team/ernst.jpeg"
                   alt="Ernst-William Hertz"
                   fill
                   className="object-cover"
@@ -131,7 +131,7 @@ export default function About() {
             <div className="space-y-4">
               <div className="relative w-full aspect-square mb-6 rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
                 <Image
-                  src="/team/patricia.jpg"
+                  src="/team/patricia.jpeg"
                   alt="Patricia Andersson"
                   fill
                   className="object-cover"
@@ -146,7 +146,7 @@ export default function About() {
             <div className="space-y-4">
               <div className="relative w-full aspect-square mb-6 rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
                 <Image
-                  src="/team/mark.jpg"
+                  src="/team/mark.jpeg"
                   alt="Mark Lange Jensen"
                   fill
                   className="object-cover"
@@ -161,7 +161,7 @@ export default function About() {
             <div className="space-y-4">
               <div className="relative w-full aspect-square mb-6 rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
                 <Image
-                  src="/team/virre.jpg"
+                  src="/team/virre.jpeg"
                   alt="Virre Van Zarate Abreu"
                   fill
                   className="object-cover"
@@ -176,7 +176,7 @@ export default function About() {
             <div className="space-y-4">
               <div className="relative w-full aspect-square mb-6 rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
                 <Image
-                  src="/team/phoebe.jpg"
+                  src="/team/phoebe.jpeg"
                   alt="Phoebe Wang"
                   fill
                   className="object-cover"
