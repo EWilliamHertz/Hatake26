@@ -9,6 +9,12 @@ export default createMiddleware({
 });
 
 export const config = {
-  // Match only internationalized pathnames
-  matcher: ['/', '/(sv|en)/:path*']
+  matcher: [
+    // Enable a redirect to a matching locale at the root
+    '/',
+    // Match standard localized paths
+    '/(sv|en)/:path*',
+    // Catch all other routes to append the locale, but exclude APIs and static files
+    '/((?!api|_next|_vercel|.*\\..*).*)'
+  ]
 };
