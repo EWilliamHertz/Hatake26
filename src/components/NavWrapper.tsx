@@ -117,7 +117,7 @@ export default function NavWrapper({ children }: { children: React.ReactNode }) 
             ) : session ? (
               <>
                 <span className="text-slate-300 mr-2">
-                  {t("hello", { email: session.user?.email })}
+                  {t("hello", { email: session.user?.email || "" })}
                 </span>
                 {isAdmin ? (
                   <Link
