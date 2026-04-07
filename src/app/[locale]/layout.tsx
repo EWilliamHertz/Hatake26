@@ -3,6 +3,7 @@ import "../globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import Provider from "@/components/Provider";
 import NavWrapper from "@/components/NavWrapper";
+import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,14 +24,8 @@ export default async function RootLayout({
     notFound();
   }
 
-  // Dynamically import messages for the current locale
-  let messages;
-  try {
-    messages = (await import(`../../messages/${locale}.json`)).default;
-  } catch (error) {
-    console.error(`Failed to load messages for locale: ${locale}`, error);
-    notFound();
-  }
+  // Get messages using next-intl's getMessages function
+  const messages = await getMessages();
 
   return (
     <html lang={locale}>
@@ -40,7 +35,7 @@ export default async function RootLayout({
       </head>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <Provider>
-          <NextIntlClientProvider messages={messages} locale={locale}>
+          <NextIntlClientProvider messages={messages}>
             <NavWrapper>{children}</NavWrapper>
           </NextIntlClientProvider>
         </Provider>
