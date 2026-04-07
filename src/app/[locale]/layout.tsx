@@ -1,11 +1,13 @@
 import { Inter } from "next/font/google";
 import "../globals.css";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
 import Provider from "@/components/Provider";
 import NavWrapper from "@/components/NavWrapper";
+import { notFound } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const locales = ["en", "sv"];
 
 export default async function RootLayout({
   children,
@@ -15,7 +17,20 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const messages = await getMessages();
+
+  // Validate locale
+  if (!locales.includes(locale)) {
+    notFound();
+  }
+
+  // Dynamically import messages for the current locale
+  let messages;
+  try {
+    messages = (await import(`../../messages/${locale}.json`)).default;
+  } catch (error) {
+    console.error(`Failed to load messages for locale: ${locale}`, error);
+    notFound();
+  }
 
   return (
     <html lang={locale}>
@@ -25,7 +40,7 @@ export default async function RootLayout({
       </head>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <Provider>
-          <NextIntlClientProvider messages={messages}>
+          <NextIntlClientProvider messages={messages} locale={locale}>
             <NavWrapper>{children}</NavWrapper>
           </NextIntlClientProvider>
         </Provider>
