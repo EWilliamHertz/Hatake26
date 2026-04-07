@@ -114,6 +114,14 @@ export default function About() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {/* Ernst-William */}
             <div className="space-y-4">
+              <div className="relative w-full aspect-square mb-6 rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
+                <Image
+                  src="/team/ernst.jpg"
+                  alt="Ernst-William Hertz"
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <h3 className="text-2xl font-bold">{t('team.ernst.name')}</h3>
               <p className="text-amber-500 font-medium uppercase tracking-wider text-sm">{t('team.ernst.role')}</p>
               <p className="text-slate-400 leading-relaxed">{t('team.ernst.desc')}</p>
@@ -121,6 +129,14 @@ export default function About() {
 
             {/* Patricia */}
             <div className="space-y-4">
+              <div className="relative w-full aspect-square mb-6 rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
+                <Image
+                  src="/team/patricia.jpg"
+                  alt="Patricia Andersson"
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <h3 className="text-2xl font-bold">{t('team.patricia.name')}</h3>
               <p className="text-amber-500 font-medium uppercase tracking-wider text-sm">{t('team.patricia.role')}</p>
               <p className="text-slate-400 leading-relaxed">{t('team.patricia.desc')}</p>
@@ -128,6 +144,14 @@ export default function About() {
 
             {/* Mark */}
             <div className="space-y-4">
+              <div className="relative w-full aspect-square mb-6 rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
+                <Image
+                  src="/team/mark.jpg"
+                  alt="Mark Lange Jensen"
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <h3 className="text-2xl font-bold">{t('team.mark.name')}</h3>
               <p className="text-amber-500 font-medium uppercase tracking-wider text-sm">{t('team.mark.role')}</p>
               <p className="text-slate-400 leading-relaxed">{t('team.mark.desc')}</p>
@@ -135,6 +159,14 @@ export default function About() {
 
             {/* Virre */}
             <div className="space-y-4">
+              <div className="relative w-full aspect-square mb-6 rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
+                <Image
+                  src="/team/virre.jpg"
+                  alt="Virre Van Zarate Abreu"
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <h3 className="text-2xl font-bold">{t('team.virre.name')}</h3>
               <p className="text-amber-500 font-medium uppercase tracking-wider text-sm">{t('team.virre.role')}</p>
               <p className="text-slate-400 leading-relaxed">{t('team.virre.desc')}</p>
@@ -144,8 +176,8 @@ export default function About() {
             <div className="space-y-4">
               <div className="relative w-full aspect-square mb-6 rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
                 <Image
-                  src="https://i.imgur.com/HrhKBOY.jpeg"
-                  alt="Phoebe"
+                  src="/team/phoebe.jpg"
+                  alt="Phoebe Wang"
                   fill
                   className="object-cover"
                 />
@@ -155,7 +187,7 @@ export default function About() {
               <p className="text-slate-400 leading-relaxed">{t('team.phoebe.desc')}</p>
             </div>
           </div>
-        </div>
+          </div>
       </section>
 
       {/* Contact CTA */}
