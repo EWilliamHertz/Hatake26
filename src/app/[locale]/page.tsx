@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
 
 interface Product {
   id: string;
@@ -19,6 +21,9 @@ interface Product {
 function MainCarousel({ products }: { products: Product[] }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
+  const t = useTranslations();
+  const pathname = usePathname();
+  const currentLocale = pathname.split('/')[1] as string;
 
   const filteredProducts = products.filter(p => p.category !== 'MTG');
 
@@ -82,10 +87,10 @@ function MainCarousel({ products }: { products: Product[] }) {
         <p className="text-xl mb-8 text-slate-200 drop-shadow-md">{product?.category}</p>
         <p className="text-4xl font-bold text-amber-400 mb-8 drop-shadow-md">{product?.price.toFixed(2)} SEK</p>
         <Link
-          href={`/products?productId=${product?.id}`}
+          href={`/${currentLocale}/products?productId=${product?.id}`}
           className="inline-block bg-amber-600 hover:bg-amber-500 text-slate-900 font-extrabold py-3 px-8 rounded-lg transition shadow-[0_0_15px_rgba(217,119,6,0.5)] hover:shadow-[0_0_25px_rgba(217,119,6,0.8)]"
         >
-          Shop Now
+          {t('Shop.addToCart')}
         </Link>
       </div>
 
@@ -143,6 +148,9 @@ function MainCarousel({ products }: { products: Product[] }) {
 function MTGCarousel({ products }: { products: Product[] }) {
   const [scrollPosition, setScrollPosition] = useState(0);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const t = useTranslations();
+  const pathname = usePathname();
+  const currentLocale = pathname.split('/')[1] as string;
 
   const filteredProducts = products.filter(
     p => p.category === 'MTG' || p.isSingle === true
@@ -168,7 +176,7 @@ function MTGCarousel({ products }: { products: Product[] }) {
   return (
     <section className="py-12 bg-gradient-to-r from-slate-800 to-slate-900 text-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 mb-8">
-        <h2 className="text-3xl font-bold mb-2">MTG Singles & Rare Cards</h2>
+        <h2 className="text-3xl font-bold mb-2">{t('About.team')} & Rare Cards</h2>
         <p className="text-slate-300">Discover our exclusive Magic: The Gathering collection</p>
       </div>
 
@@ -185,7 +193,7 @@ function MTGCarousel({ products }: { products: Product[] }) {
             key={product.id}
             className="flex-shrink-0 w-64 snap-center group py-4"
           >
-            <Link href={`/products?productId=${product.id}`}>
+            <Link href={`/${currentLocale}/products?productId=${product.id}`}>
               <div className="bg-transparent overflow-hidden cursor-pointer h-full flex flex-col items-center">
                 {/* TCG Card Ratio Container (approx 2.5 x 3.5) */}
                 <div className="relative w-full aspect-[2.5/3.5] rounded-xl overflow-hidden shadow-lg group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-300 border border-slate-700/50">
@@ -197,7 +205,7 @@ function MTGCarousel({ products }: { products: Product[] }) {
                   />
                   {product.stock === 0 && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                      <span className="text-white font-bold text-lg">Out of Stock</span>
+                      <span className="text-white font-bold text-lg">{t('Shop.outOfStock')}</span>
                     </div>
                   )}
                 </div>
@@ -209,7 +217,7 @@ function MTGCarousel({ products }: { products: Product[] }) {
                   <div className="flex justify-between items-end">
                     <p className="text-xl font-bold text-amber-600">{product.price.toFixed(2)} SEK</p>
                     <p className="text-sm text-slate-500">
-                      {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+                      {product.stock > 0 ? `${product.stock} ${t('Shop.price')}` : t('Shop.outOfStock')}
                     </p>
                   </div>
                 </div>
@@ -224,6 +232,10 @@ function MTGCarousel({ products }: { products: Product[] }) {
 
 // Featured Products Grid
 function FeaturedProducts({ products }: { products: Product[] }) {
+  const t = useTranslations();
+  const pathname = usePathname();
+  const currentLocale = pathname.split('/')[1] as string;
+
   const featured = products
     .filter(p => p.stock > 0)
     .sort(() => Math.random() - 0.5)
@@ -241,7 +253,7 @@ function FeaturedProducts({ products }: { products: Product[] }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featured.map(product => (
-            <Link key={product.id} href={`/products?productId=${product.id}`}>
+            <Link key={product.id} href={`/${currentLocale}/products?productId=${product.id}`}>
               <div className="bg-slate-50 rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden group cursor-pointer h-full flex flex-col">
                 <div className="relative h-64 w-full bg-slate-200 overflow-hidden flex-shrink-0">
                   <img
@@ -276,6 +288,9 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const t = useTranslations();
+  const pathname = usePathname();
+  const currentLocale = pathname.split('/')[1] as string;
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -313,13 +328,13 @@ export default function Home() {
         <div className="w-full h-[60vh] bg-slate-800 flex items-center justify-center">
           <div className="text-white text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-4 border-white border-t-amber-600 mx-auto mb-4"></div>
-            <p>Loading featured products...</p>
+            <p>{t('Common.loading')}</p>
           </div>
         </div>
       ) : error ? (
         <div className="w-full h-[60vh] bg-red-50 flex items-center justify-center">
           <div className="text-center p-8">
-            <p className="text-red-600 font-semibold mb-2 text-lg">Failed to load products</p>
+            <p className="text-red-600 font-semibold mb-2 text-lg">{t('Common.error')}</p>
             <p className="text-red-500 text-sm mb-4">{error}</p>
             <p className="text-slate-600 text-xs">Check that DATABASE_URL is set in .env.local</p>
           </div>
@@ -339,10 +354,21 @@ export default function Home() {
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">Explore All Products</h2>
           <Link
-            href="/products"
+            href={`/${currentLocale}/products`}
             className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-8 rounded-lg transition-colors"
           >
             View Full Catalog
+          </Link>
+        </div>
+
+        {/* CTA to About Us */}
+        <div className="mt-16 p-8 bg-gradient-to-r from-slate-800 to-slate-900 text-white rounded-lg text-center">
+          <h3 className="text-2xl font-bold mb-4">{t('About.narrative')}</h3>
+          <Link
+            href={`/${currentLocale}/about`}
+            className="inline-block bg-amber-600 hover:bg-amber-500 text-slate-900 font-bold py-3 px-8 rounded-lg transition-colors"
+          >
+            {t('Navigation.about')}
           </Link>
         </div>
       </main>
@@ -371,11 +397,12 @@ export default function Home() {
             </div>
 
             <div>
-              <h3 className="text-white text-lg font-bold mb-4">Quick Links</h3>
+              <h3 className="text-white text-lg font-bold mb-4">{t('Footer.quickLinks')}</h3>
               <ul className="space-y-2">
-                <li><Link href="/products" className="hover:text-white transition-colors">All Products</Link></li>
+                <li><Link href={`/${currentLocale}/products`} className="hover:text-white transition-colors">All Products</Link></li>
                 <li><Link href="/admin" className="hover:text-white transition-colors">Admin Panel</Link></li>
-                <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+                <li><Link href={`/${currentLocale}`} className="hover:text-white transition-colors">{t('Navigation.home')}</Link></li>
+                <li><Link href={`/${currentLocale}/about`} className="hover:text-white transition-colors">{t('Navigation.about')}</Link></li>
               </ul>
             </div>
           </div>

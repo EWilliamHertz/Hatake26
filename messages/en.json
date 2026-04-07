@@ -5,12 +5,50 @@
     "wholesale": "Wholesale",
     "testimonials": "Testimonials",
     "login": "Login",
-    "dashboard": "My Dashboard"
+    "dashboard": "My Dashboard",
+    "about": "About Us"
   },
   "Shop": {
     "title": "All Products",
     "searchPlaceholder": "Search for Charizard, Black Lotus...",
     "addToCart": "Add to Cart",
-    "outOfStock": "Out of Stock"
+    "outOfStock": "Out of Stock",
+    "price": "Price",
+    "stock": "Stock",
+    "category": "Category",
+    "sealed": "Sealed",
+    "merchandise": "Merchandise",
+    "mtg": "MTG Singles",
+    "noProducts": "No products found"
+  },
+  "Footer": {
+    "companyName": "Hatake KB",
+    "description": "Premium trading cards and merchandise",
+    "quickLinks": "Quick Links",
+    "copyright": "© 2024 Hatake KB. All rights reserved.",
+    "contact": "Contact",
+    "followUs": "Follow Us"
+  },
+  "About": {
+    "title": "About Hatake KB",
+    "tagline": "Premium Trading Cards & Merchandise",
+    "narrative": "We represent a fusion of high-end e-commerce and international excellence, dedicated to bringing you top-quality merchandise and trading cards from around the world.",
+    "mission": "Our Mission",
+    "missionText": "To provide collectors and enthusiasts with the finest selection of trading cards and premium merchandise, with exceptional service and attention to detail.",
+    "team": "Our Team",
+    "teamDescription": "Meet the talented individuals behind Hatake KB",
+    "joinCta": "Explore Our Collection",
+    "exploreCta": "Discover our full range of products and start your collection today."
+  },
+  "Common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "logout": "Logout",
+    "register": "Register"
   }
 }

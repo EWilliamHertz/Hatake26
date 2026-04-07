@@ -5,12 +5,50 @@
     "wholesale": "Grossist",
     "testimonials": "Omdömen",
     "login": "Logga in",
-    "dashboard": "Min Panel"
+    "dashboard": "Min Panel",
+    "about": "Om oss"
   },
   "Shop": {
     "title": "Alla Produkter",
     "searchPlaceholder": "Sök efter Charizard, Black Lotus...",
     "addToCart": "Lägg i varukorg",
-    "outOfStock": "Slutsåld"
+    "outOfStock": "Slutsåld",
+    "price": "Pris",
+    "stock": "Lager",
+    "category": "Kategori",
+    "sealed": "Förseglat",
+    "merchandise": "Merchandise",
+    "mtg": "MTG Kort",
+    "noProducts": "Inga produkter funna"
+  },
+  "Footer": {
+    "companyName": "Hatake KB",
+    "description": "Premium samlarkort och merchandise",
+    "quickLinks": "Snabblänkar",
+    "copyright": "© 2024 Hatake KB. Alla rättigheter förbehållna.",
+    "contact": "Kontakt",
+    "followUs": "Följ oss"
+  },
+  "About": {
+    "title": "Om Hatake KB",
+    "tagline": "Premium Samlarkort & Merchandise",
+    "narrative": "Vi representerar en fusion av högt klassad e-handel och internationell excellens, dedikerad till att ge dig högkvalitativ merchandise och samlarkort från hela världen.",
+    "mission": "Vår Uppdrag",
+    "missionText": "Att tillhandahålla samlarare och entusiaster med det finaste utbudet av samlarkort och premiummerchandise, med exceptionell service och uppmärksamhet på detaljer.",
+    "team": "Vår Lag",
+    "teamDescription": "Möt de begåvade människorna bakom Hatake KB",
+    "joinCta": "Utforska Vår Kollektion",
+    "exploreCta": "Upptäck vårt fullständiga produktutbud och starta din samling idag."
+  },
+  "Common": {
+    "loading": "Laddar...",
+    "error": "Något gick fel",
+    "success": "Framgång",
+    "cancel": "Avbryt",
+    "save": "Spara",
+    "delete": "Ta bort",
+    "edit": "Redigera",
+    "logout": "Logga ut",
+    "register": "Registrera"
   }
 }
