@@ -93,7 +93,7 @@ export default function NavWrapper({ children }: { children: React.ReactNode }) 
             {/* The Cart Button */}
             <button
               onClick={toggleCart}
-              className="relative hover:text-amber-400 transition mr-4"
+              className="relative hover:text-amber-400 transition md:mr-4"
             >
               <svg
                 className="w-7 h-7"
@@ -116,10 +116,10 @@ export default function NavWrapper({ children }: { children: React.ReactNode }) 
             </button>
 
             {status === "loading" ? (
-              <span className="text-slate-500">...</span>
+              <span className="text-slate-500 hidden md:block">...</span>
             ) : session ? (
-              <>
-                <span className="text-slate-300 mr-2">
+              <div className="hidden md:flex items-center space-x-4">
+                <span className="text-slate-300 mr-2 truncate max-w-[150px]">
                   {t("hello", { email: session.user?.email || "" })}
                 </span>
                 {isAdmin ? (
@@ -143,9 +143,9 @@ export default function NavWrapper({ children }: { children: React.ReactNode }) 
                 >
                   {tCommon("logout")}
                 </button>
-              </>
+              </div>
             ) : (
-              <>
+              <div className="hidden md:flex items-center space-x-4">
                 <Link href={`/${currentLocale}/login`} className="hover:text-slate-300 transition">
                   {t("login")}
                 </Link>
@@ -155,7 +155,7 @@ export default function NavWrapper({ children }: { children: React.ReactNode }) 
                 >
                   {tCommon("register")}
                 </Link>
-              </>
+              </div>
             )}
             
             {/* Mobile Menu Toggle Hamburger */}
@@ -205,6 +205,54 @@ export default function NavWrapper({ children }: { children: React.ReactNode }) 
             <Link href={`/${currentLocale}/testimonials`} onClick={() => setIsMobileMenuOpen(false)} className="text-lg hover:text-amber-400 transition">
               {t("testimonials")}
             </Link>
+
+            {/* Mobile Authentication Links */}
+            <div className="pt-4 mt-2 border-t border-slate-700 flex flex-col space-y-4">
+              {status === "loading" ? (
+                <span className="text-slate-500">...</span>
+              ) : session ? (
+                <>
+                  <span className="text-slate-400 text-sm">
+                    {t("hello", { email: session.user?.email || "" })}
+                  </span>
+                  {isAdmin ? (
+                    <Link
+                      href="/admin"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-lg font-bold text-yellow-500 hover:text-yellow-400 transition"
+                    >
+                      {t("admin")}
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`/${currentLocale}/dashboard`}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-lg font-bold text-blue-400 hover:text-blue-300 transition"
+                    >
+                      {t("dashboard")}
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      signOut({ callbackUrl: `/${currentLocale}` });
+                    }}
+                    className="text-lg text-left text-red-400 hover:text-red-300 transition"
+                  >
+                    {tCommon("logout")}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link href={`/${currentLocale}/login`} onClick={() => setIsMobileMenuOpen(false)} className="text-lg hover:text-amber-400 transition">
+                    {t("login")}
+                  </Link>
+                  <Link href={`/${currentLocale}/register`} onClick={() => setIsMobileMenuOpen(false)} className="text-lg hover:text-amber-400 transition">
+                    {tCommon("register")}
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         )}
       </nav>
