@@ -79,11 +79,10 @@ export default function About() {
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">Phoebe</h3>
-              <p className="text-slate-600 mb-4">Founder & Creative Director</p>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">Phoebe Wang</h3>
+              <p className="text-slate-600 mb-4">Chinese Partner</p>
               <p className="text-slate-500 max-w-xs">
-                Passionate about bringing together the worlds of high-end commerce and artistic excellence. 
-                Dedicated to curating the finest collections for discerning collectors worldwide.
+                Our Chinese Partner who oversees merchandise production and serves as our key liaison for building our network and presence in China. Phoebe plays a crucial role in our global reach and quality assurance.
               </p>
             </div>
 
