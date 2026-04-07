@@ -223,7 +223,7 @@ export default function About() {
             <Link href={`/${currentLocale}/products`} className="hover:text-white transition-colors">{tNav('products')}</Link>
             <Link href={`/${currentLocale}/about`} className="hover:text-white transition-colors">{tNav('about')}</Link>
           </div>
-          <p>© 2024 Hatake KB. All rights reserved.</p>
+          <p>© 2026 Hatake KB. All rights reserved.</p>
         </div>
       </footer>
     </div>

@@ -277,7 +277,7 @@ export default function AdminProductsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-1">Edition (Optional)</label>
-                  <p className="text-xs text-slate-500 mb-2">E.g., "Scarlet & Violet", "2024".</p>
+                  <p className="text-xs text-slate-500 mb-2">E.g., "Scarlet & Violet", "2026".</p>
                   <input type="text" placeholder="Edition / Year" value={manualForm.edition} onChange={e => setManualForm({...manualForm, edition: e.target.value})} className="w-full border p-3 rounded bg-slate-50 focus:bg-white" />
                 </div>
               </div>
