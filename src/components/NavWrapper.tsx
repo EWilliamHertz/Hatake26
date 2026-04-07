@@ -12,10 +12,11 @@ export default function NavWrapper({ children }: { children: React.ReactNode }) 
   const { data: session, status } = useSession();
   const isAdmin = (session?.user as any)?.role === "ADMIN";
   const t = useTranslations("Navigation");
-  const pathname = usePathname();
+  const tCommon = useTranslations("Common");
+  const pathname = usePathname() || "";
 
   // Get current locale from pathname
-  const currentLocale = pathname.split("/")[1] as string;
+  const currentLocale = pathname.split("/")[1] || "sv";
 
   // Connect navigation to our Zustand store
   const { items, toggleCart } = useCartStore();
@@ -138,7 +139,7 @@ export default function NavWrapper({ children }: { children: React.ReactNode }) 
                   onClick={() => signOut({ callbackUrl: `/${currentLocale}` })}
                   className="hover:text-slate-300 transition"
                 >
-                  {useTranslations("Common")("logout")}
+                  {tCommon("logout")}
                 </button>
               </>
             ) : (
@@ -150,7 +151,7 @@ export default function NavWrapper({ children }: { children: React.ReactNode }) 
                   href={`/${currentLocale}/register`}
                   className="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-md transition"
                 >
-                  {useTranslations("Common")("register")}
+                  {tCommon("register")}
                 </Link>
               </>
             )}
