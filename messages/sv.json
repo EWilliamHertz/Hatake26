@@ -6,7 +6,9 @@
     "testimonials": "Omdömen",
     "login": "Logga in",
     "dashboard": "Min Panel",
-    "about": "Om oss"
+    "about": "Om oss",
+    "admin": "Administratörspanel",
+    "hello": "Hej {email}"
   },
   "Shop": {
     "title": "Alla Produkter",
@@ -19,7 +21,16 @@
     "sealed": "Förseglat",
     "merchandise": "Merchandise",
     "mtg": "MTG Kort",
-    "noProducts": "Inga produkter funna"
+    "noProducts": "Inga produkter funna",
+    "filterAll": "Alla Produkter",
+    "filterMtg": "MTG Kort",
+    "filterMagic": "Förseglad Magic",
+    "filterPokemon": "Förseglad Pokémon",
+    "inStock": "I Lager",
+    "soldOut": "Slutsåld",
+    "currentlyUnavailable": "För närvarande otillgänglig",
+    "noDetails": "Ingen specifik information tillgänglig för denna artikel.",
+    "loadingCatalog": "Laddar katalog..."
   },
   "Footer": {
     "companyName": "Hatake KB",
@@ -30,15 +41,66 @@
     "followUs": "Följ oss"
   },
   "About": {
-    "title": "Om Hatake KB",
-    "tagline": "Premium Samlarkort & Merchandise",
-    "narrative": "Vi representerar en fusion av högt klassad e-handel och internationell excellens, dedikerad till att ge dig högkvalitativ merchandise och samlarkort från hela världen.",
-    "mission": "Vår Uppdrag",
-    "missionText": "Att tillhandahålla samlarare och entusiaster med det finaste utbudet av samlarkort och premiummerchandise, med exceptionell service och uppmärksamhet på detaljer.",
-    "team": "Vår Lag",
-    "teamDescription": "Möt de begåvade människorna bakom Hatake KB",
-    "joinCta": "Utforska Vår Kollektion",
-    "exploreCta": "Upptäck vårt fullständiga produktutbud och starta din samling idag."
+    "title": "Om HatakeSocial",
+    "subtitle": "Sverige-baserat • TCG-community • Grossistleveranskedja",
+    "description": "HatakeSocial är vårt försök att bygga två saker samtidigt — eftersom de hör ihop. Först: en kedja av hälsosamma leverantörer som kan flytta förstklassiga, högkvalitativa TCG-produkter över hela Europa. Pålitligt lager, ren produktdata och rättvis logistik. För det andra: en social plattform som drar samman samlare. En plats att visa din samling, hitta byten, meddela säkert och träffa människorna bakom pärmarna. Vårt långsiktiga mål är att stärka lokala spelbutiker också — med bättre upptäckt, tydligare evenemang och så småningom verkliga partnerskap som hjälper communityn att växa offline.",
+    "features": {
+      "bulkImport": "Bulkimport",
+      "bulkImportDesc": "Vi köper in och importerar merch i bulk så att butiker kan fylla på lagret pålitligt och planera kampanjer.",
+      "euDispatch": "EU-utskick från Sverige",
+      "euDispatchDesc": "Snabb frakt inom EU, med tydlig produktinfo och konsekvent förpackning.",
+      "creditLine": "Erbjuder kreditlinje",
+      "creditLineDesc": "Har du lite ont om kontanter? Registrerade företag tillåts köpa på kredit."
+    },
+    "building": {
+      "title": "Vad HatakeSocial bygger",
+      "social": "Ett socialt nätverk för samlare",
+      "socialDesc": "Samlingar, meddelanden, byten, community-inlägg och profiler — byggt för att hjälpa samlare att hitta varandra och känna sig trygga med att göra affärer.",
+      "shops": "Lokala spelbutiker, förstärkta",
+      "shopsDesc": "Vår långsiktiga dröm är att stödja lokala spelbutiker och evenemang över hela Europa — och så småningom öppna / samarbeta med butiker för att sprida vår passion för TCG. Vi tror att de bästa community-ögonblicken sker offline också: Friday Night Magic, prereleases, avslappnade Commander-kvällar och turneringar där du får vänner. Plattformen ska göra dessa ögonblick lättare att upptäcka och gå med i."
+    },
+    "vision": {
+      "title": "Visionen",
+      "text": "Vi vill att HatakeSocial ska vara platsen där samlare känner sig hemma — och där butiker känner sig stödda. En ren leveranskedja gör hobbyn hälsosammare. Ett starkt socialt nätverk gör hobbyn varmare."
+    },
+    "team": {
+      "title": "Vårt Team",
+      "subtitle": "Människorna bakom HatakeSocial",
+      "ernst": {
+        "name": "Ernst-William Hertz",
+        "role": "Grundare",
+        "desc": "En aktiv Magic: The Gathering-spelare från 2007-2017, som återvände 2023. Den enda designern och visionären bakom HatakeSocial-plattformen."
+      },
+      "patricia": {
+        "name": "Patricia Andersson",
+        "role": "VD",
+        "desc": "Mor till Ernst-William, Patricia studerade företagsekonomi och arbetar som kriminalvårdare. Hon fostrade stolt två Magic-spelande barn."
+      },
+      "mark": {
+        "name": "Mark Lange Jensen",
+        "role": "Medgrundare",
+        "desc": "En ivrig spelare, hängiven betatestare och en källa till stort moraliskt stöd, Mark har varit avgörande för att utforma användarupplevelsen."
+      },
+      "virre": {
+        "name": "Virre Van Zarate Abreu",
+        "role": "Konventionell Manager",
+        "desc": "En stor entreprenör med ett skarpt affärssinne, Virre agerar som vår konventionella manager och vägleder vår strategiska tillväxt och verksamhet."
+      },
+      "phoebe": {
+        "name": "Phoebe Wang",
+        "role": "Partner i Asien",
+        "desc": "Vår kinesiska partner som övervakar merchandise-produktion och fungerar som vår nyckelperson för att bygga vårt nätverk och närvaro i Kina. Phoebe spelar en avgörande roll i vår globala räckvidd och kvalitetssäkring."
+      }
+    },
+    "contact": {
+      "title": "Kontakta oss",
+      "text": "Intresserad av att samarbeta med oss eller har frågor om vår plattform?"
+    }
+  },
+  "Testimonials": {
+    "title": "Vad våra kunder säger",
+    "loading": "Laddar omdömen...",
+    "none": "Inga omdömen tillgängliga för tillfället."
   },
   "Common": {
     "loading": "Laddar...",
@@ -49,6 +111,10 @@
     "delete": "Ta bort",
     "edit": "Redigera",
     "logout": "Logga ut",
-    "register": "Registrera"
+    "register": "Registrera",
+    "featuredProducts": "Utvalda Produkter",
+    "featuredSubtitle": "Bläddra bland våra senaste tillskott och bästsäljare",
+    "rareCards": "Sällsynta Kort",
+    "rareSubtitle": "Upptäck vår exklusiva Magic: The Gathering-samling"
   }
 }

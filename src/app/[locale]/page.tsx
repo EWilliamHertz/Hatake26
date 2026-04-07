@@ -176,8 +176,8 @@ function MTGCarousel({ products }: { products: Product[] }) {
   return (
     <section className="py-12 bg-gradient-to-r from-slate-800 to-slate-900 text-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 mb-8">
-        <h2 className="text-3xl font-bold mb-2">{t('About.team')} & Rare Cards</h2>
-        <p className="text-slate-300">Discover our exclusive Magic: The Gathering collection</p>
+        <h2 className="text-3xl font-bold mb-2">{t('Common.rareCards')}</h2>
+        <p className="text-slate-300">{t('Common.rareSubtitle')}</p>
       </div>
 
       <div
@@ -248,8 +248,8 @@ function FeaturedProducts({ products }: { products: Product[] }) {
   return (
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-2">Featured Products</h2>
-        <p className="text-slate-600 mb-12">Browse our latest additions and bestsellers</p>
+        <h2 className="text-3xl font-bold mb-2">{t('Common.featuredProducts')}</h2>
+        <p className="text-slate-600 mb-12">{t('Common.featuredSubtitle')}</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featured.map(product => (

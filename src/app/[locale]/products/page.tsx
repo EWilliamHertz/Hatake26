@@ -3,24 +3,24 @@ import React, { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
+import { useTranslations } from 'next-intl';
 
 function ShopContent() {
+  const t = useTranslations('Shop');
   const searchParams = useSearchParams();
   const productIdFromUrl = searchParams.get('productId');
 
-const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('ALL');
-  const [searchQuery, setSearchQuery] = useState(''); // NEW: Search bar state
+  const [searchQuery, setSearchQuery] = useState('');
   
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
-  const [fullImages, setFullImages] = useState<string[]>([]); // Tracks the lazy-loaded gallery
+  const [fullImages, setFullImages] = useState<string[]>([]);
 
-  // Wire up our global cart function
   const addToCart = useCartStore(state => state.addToCart);
 
-  // NEW: Listen for the Escape key to close the modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && selectedProduct) {
@@ -35,9 +35,8 @@ const [products, setProducts] = useState<any[]>([]);
   const handleProductClick = async (product: any) => {
     setSelectedProduct(product);
     setCurrentImgIndex(0);
-    setFullImages([product.imageUrl]); // Instantly show thumbnail
+    setFullImages([product.imageUrl]);
 
-    // Silently fetch the remaining high-res gallery images in the background
     try {
       const res = await fetch(`/api/products/${product.id}`);
       const data = await res.json();
@@ -56,7 +55,6 @@ const [products, setProducts] = useState<any[]>([]);
         setProducts(data);
         setLoading(false);
         
-        // Auto-open modal if URL parameter exists
         if (productIdFromUrl) {
           const targetProduct = data.find((p: any) => p.id === productIdFromUrl);
           if (targetProduct) handleProductClick(targetProduct);
@@ -75,13 +73,12 @@ const [products, setProducts] = useState<any[]>([]);
     <div className="flex-grow bg-slate-50 py-12 px-4 relative">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-          <h1 className="text-3xl font-bold text-slate-900">All Products</h1>
+          <h1 className="text-3xl font-bold text-slate-900">{t('title')}</h1>
           
-          {/* TCG Search Bar */}
           <div className="relative w-full md:w-96">
             <input 
               type="text" 
-              placeholder="Search for Charizard, Black Lotus..." 
+              placeholder={t('searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full border border-slate-300 pl-10 pr-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm"
@@ -90,7 +87,6 @@ const [products, setProducts] = useState<any[]>([]);
           </div>
         </div>
         
-        {/* Filtering Tabs */}
         <div className="flex gap-4 mb-8 overflow-x-auto pb-2">
           {['ALL', 'MTG', 'MAGIC', 'SEALED', 'MERCHANDISE'].map(cat => (
             <button 
@@ -98,19 +94,17 @@ const [products, setProducts] = useState<any[]>([]);
               onClick={() => setFilter(cat)}
               className={`px-4 py-2 rounded shadow-sm transition whitespace-nowrap ${filter === cat ? 'bg-slate-800 text-white' : 'bg-white border text-slate-700 hover:bg-slate-100'}`}
             >
-              {cat === 'ALL' ? 'All Products' : cat === 'MTG' ? 'MTG Singles' : cat === 'MAGIC' ? 'Sealed Magic' : cat === 'SEALED' ? 'Sealed Pokémon' : 'Merchandise'}
+              {cat === 'ALL' ? t('filterAll') : cat === 'MTG' ? t('filterMtg') : cat === 'MAGIC' ? t('filterMagic') : cat === 'SEALED' ? t('filterPokemon') : t('merchandise')}
             </button>
           ))}
         </div>
         
-        {/* Real Product Grid */}
         {loading ? (
-          <p className="text-slate-500">Loading catalog...</p>
+          <p className="text-slate-500">{t('loadingCatalog')}</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredProducts.map((product) => (
               <div key={product.id} className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition cursor-pointer flex flex-col" onClick={() => handleProductClick(product)}>
-                {/* Locked height and flex-shrink-0 prevents millimeter collapsing */}
                 <div className="relative h-56 w-full bg-slate-100 flex-shrink-0 p-4">
                   {product.imageUrl ? (
                     <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain" />
@@ -119,7 +113,7 @@ const [products, setProducts] = useState<any[]>([]);
                   )}
                   {product.stock === 0 && (
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-sm">
-                      <span className="bg-red-600 text-white font-bold px-3 py-1 rounded">Out of Stock</span>
+                      <span className="bg-red-600 text-white font-bold px-3 py-1 rounded">{t('outOfStock')}</span>
                     </div>
                   )}
                 </div>
@@ -131,15 +125,14 @@ const [products, setProducts] = useState<any[]>([]);
                     <div className="flex items-center justify-between mb-3">
                       <p className="font-extrabold text-amber-600 text-xl">{product.price.toFixed(2)} SEK</p>
                       <span className={`text-xs font-bold ${product.stock > 0 ? 'text-green-600' : 'text-red-500'}`}>
-                        {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                        {product.stock > 0 ? t('inStock') : t('outOfStock')}
                       </span>
                     </div>
                     
-                    {/* Quick Add To Cart Button */}
                     <button 
                       disabled={product.stock === 0}
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevents the modal from opening when clicking the cart button!
+                        e.stopPropagation();
                         addToCart({
                           id: product.id,
                           name: product.name,
@@ -147,20 +140,19 @@ const [products, setProducts] = useState<any[]>([]);
                           imageUrl: product.imageUrl
                         });
                       }}
-                      className="w-full bg-slate-100 hover:bg-slate-900 hover:text-white text-slate-800 font-bold py-2 rounded-lg transition disabled:opacity-50 disabled:hover:bg-slate-100 disabled:hover:text-slate-800"
+                      className="w-full bg-slate-100 hover:bg-slate-900 hover:text-white text-slate-800 font-bold py-2 rounded-lg transition disabled:opacity-50"
                     >
-                      {product.stock > 0 ? '+ Add to Cart' : 'Sold Out'}
+                      {product.stock > 0 ? `+ ${t('addToCart')}` : t('soldOut')}
                     </button>
                   </div>
                 </div>
               </div>
             ))}
-            {filteredProducts.length === 0 && <p className="text-slate-500 col-span-full">No products found in this category.</p>}
+            {filteredProducts.length === 0 && <p className="text-slate-500 col-span-full">{t('noProducts')}</p>}
           </div>
         )}
       </div>
 
-      {/* PRODUCT MODAL WITH GALLERY */}
       {selectedProduct && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4 overflow-y-auto"
@@ -168,17 +160,14 @@ const [products, setProducts] = useState<any[]>([]);
         >
           <div 
             className="bg-white w-full max-w-5xl rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row relative animate-in fade-in zoom-in duration-200 my-8"
-            onClick={(e) => e.stopPropagation()} // Prevents clicks inside the white box from closing the modal
+            onClick={(e) => e.stopPropagation()}
           >
             <button onClick={() => { setSelectedProduct(null); setCurrentImgIndex(0); }} className="absolute top-4 right-4 z-20 bg-slate-100 hover:bg-slate-200 rounded-full p-2 text-slate-800 transition shadow">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             
-            {/* Image Gallery Section */}
             <div className="md:w-1/2 bg-slate-100 relative min-h-[400px] flex flex-col">
-              {/* Main Active Image */}
               <div className="relative flex-grow flex items-center justify-center p-8">
-                 {/* Left Arrow */}
                  {fullImages.length > 1 && (
                    <button onClick={() => setCurrentImgIndex(prev => prev === 0 ? fullImages.length - 1 : prev - 1)} className="absolute left-4 z-10 bg-white/70 hover:bg-white p-2 rounded-full shadow transition">
                      &#8249;
@@ -191,7 +180,6 @@ const [products, setProducts] = useState<any[]>([]);
                    className="w-full h-full max-h-[400px] object-contain drop-shadow-xl transition-all duration-300" 
                  />
 
-                 {/* Right Arrow */}
                  {fullImages.length > 1 && (
                    <button onClick={() => setCurrentImgIndex(prev => prev === fullImages.length - 1 ? 0 : prev + 1)} className="absolute right-4 z-10 bg-white/70 hover:bg-white p-2 rounded-full shadow transition">
                      &#8250;
@@ -199,7 +187,6 @@ const [products, setProducts] = useState<any[]>([]);
                  )}
               </div>
 
-              {/* Thumbnails Strip */}
               {fullImages.length > 1 && (
                 <div className="bg-slate-200 p-4 flex gap-3 overflow-x-auto">
                   {fullImages.map((imgUrl: string, idx: number) => (
@@ -216,7 +203,6 @@ const [products, setProducts] = useState<any[]>([]);
               )}
             </div>
 
-            {/* Info Section */}
             <div className="md:w-1/2 p-8 flex flex-col justify-center">
               <p className="text-sm text-slate-500 font-bold uppercase tracking-widest mb-2">{selectedProduct.category} {selectedProduct.edition && `• ${selectedProduct.edition}`}</p>
               <h2 className="text-3xl font-extrabold text-slate-900 mb-4">{selectedProduct.name}</h2>
@@ -224,7 +210,7 @@ const [products, setProducts] = useState<any[]>([]);
               
               <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 mb-8 max-h-48 overflow-y-auto">
                 <p className="text-slate-700 leading-relaxed text-sm whitespace-pre-wrap">
-                  {selectedProduct.description || "No specific details provided for this item."}
+                  {selectedProduct.description || t('noDetails')}
                 </p>
               </div>
 
@@ -235,7 +221,7 @@ const [products, setProducts] = useState<any[]>([]);
                     <span className={`relative inline-flex rounded-full h-3 w-3 ${selectedProduct.stock > 0 ? 'bg-green-500' : 'bg-red-500'}`}></span>
                   </span>
                   <span className={`font-medium ${selectedProduct.stock > 0 ? 'text-green-700' : 'text-red-700'}`}>
-                    {selectedProduct.stock > 0 ? `${selectedProduct.stock} In Stock` : 'Currently Unavailable'}
+                    {selectedProduct.stock > 0 ? `${selectedProduct.stock} ${t('inStock')}` : t('currentlyUnavailable')}
                   </span>
                 </div>
                 <button 
@@ -250,7 +236,7 @@ const [products, setProducts] = useState<any[]>([]);
                   }}
                   className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition disabled:opacity-50 shadow-lg hover:shadow-xl"
                 >
-                  {selectedProduct.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+                  {selectedProduct.stock > 0 ? t('addToCart') : t('outOfStock')}
                 </button>
               </div>
             </div>

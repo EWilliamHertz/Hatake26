@@ -117,14 +117,14 @@ export default function NavWrapper({ children }: { children: React.ReactNode }) 
             ) : session ? (
               <>
                 <span className="text-slate-300 mr-2">
-                  Hello {session.user?.email}
+                  {t("hello", { email: session.user?.email })}
                 </span>
                 {isAdmin ? (
                   <Link
                     href="/admin"
                     className="bg-yellow-500 text-slate-900 px-4 py-1 rounded font-bold hover:bg-yellow-400 transition shadow-sm"
                   >
-                    Admin Panel
+                    {t("admin")}
                   </Link>
                 ) : (
                   <Link
@@ -138,7 +138,7 @@ export default function NavWrapper({ children }: { children: React.ReactNode }) 
                   onClick={() => signOut({ callbackUrl: `/${currentLocale}` })}
                   className="hover:text-slate-300 transition"
                 >
-                  Logout
+                  {useTranslations("Common")("logout")}
                 </button>
               </>
             ) : (
@@ -150,7 +150,7 @@ export default function NavWrapper({ children }: { children: React.ReactNode }) 
                   href={`/${currentLocale}/register`}
                   className="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-md transition"
                 >
-                  Register
+                  {useTranslations("Common")("register")}
                 </Link>
               </>
             )}
