@@ -1,0 +1,16 @@
+{
+  "Navigation": {
+    "home": "Hem",
+    "products": "Produkter",
+    "wholesale": "Grossist",
+    "testimonials": "Omdömen",
+    "login": "Logga in",
+    "dashboard": "Min Panel"
+  },
+  "Shop": {
+    "title": "Alla Produkter",
+    "searchPlaceholder": "Sök efter Charizard, Black Lotus...",
+    "addToCart": "Lägg i varukorg",
+    "outOfStock": "Slutsåld"
+  }
+}

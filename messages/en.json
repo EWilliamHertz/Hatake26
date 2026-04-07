@@ -1,0 +1,16 @@
+{
+  "Navigation": {
+    "home": "Home",
+    "products": "Products",
+    "wholesale": "Wholesale",
+    "testimonials": "Testimonials",
+    "login": "Login",
+    "dashboard": "My Dashboard"
+  },
+  "Shop": {
+    "title": "All Products",
+    "searchPlaceholder": "Search for Charizard, Black Lotus...",
+    "addToCart": "Add to Cart",
+    "outOfStock": "Out of Stock"
+  }
+}
