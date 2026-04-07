@@ -41,9 +41,10 @@
     "followUs": "Följ oss"
   },
   "About": {
-    "title": "Om HatakeSocial",
+    "narrative": "Vår Berättelse och Vision",
+    "title": "Om Hatake",
     "subtitle": "Sverige-baserat • TCG-community • Grossistleveranskedja",
-    "description": "HatakeSocial är vårt försök att bygga två saker samtidigt — eftersom de hör ihop. Först: en kedja av hälsosamma leverantörer som kan flytta förstklassiga, högkvalitativa TCG-produkter över hela Europa. Pålitligt lager, ren produktdata och rättvis logistik. För det andra: en social plattform som drar samman samlare. En plats att visa din samling, hitta byten, meddela säkert och träffa människorna bakom pärmarna. Vårt långsiktiga mål är att stärka lokala spelbutiker också — med bättre upptäckt, tydligare evenemang och så småningom verkliga partnerskap som hjälper communityn att växa offline.",
+    "description": "Hatake är vårt försök att bygga två saker samtidigt — eftersom de hör ihop. Först: en kedja av hälsosamma leverantörer som kan flytta förstklassiga, högkvalitativa TCG-produkter över hela Europa. Pålitligt lager, ren produktdata och rättvis logistik. För det andra: en social plattform som drar samman samlare. En plats att visa din samling, hitta byten, meddela säkert och träffa människorna bakom pärmarna. Vårt långsiktiga mål är att stärka lokala spelbutiker också — med bättre upptäckt, tydligare evenemang och så småningom verkliga partnerskap som hjälper communityn att växa offline.",
     "features": {
       "bulkImport": "Bulkimport",
       "bulkImportDesc": "Vi köper in och importerar merch i bulk så att butiker kan fylla på lagret pålitligt och planera kampanjer.",
@@ -53,7 +54,7 @@
       "creditLineDesc": "Har du lite ont om kontanter? Registrerade företag tillåts köpa på kredit."
     },
     "building": {
-      "title": "Vad HatakeSocial bygger",
+      "title": "Vad Hatake bygger",
       "social": "Ett socialt nätverk för samlare",
       "socialDesc": "Samlingar, meddelanden, byten, community-inlägg och profiler — byggt för att hjälpa samlare att hitta varandra och känna sig trygga med att göra affärer.",
       "shops": "Lokala spelbutiker, förstärkta",
@@ -61,15 +62,15 @@
     },
     "vision": {
       "title": "Visionen",
-      "text": "Vi vill att HatakeSocial ska vara platsen där samlare känner sig hemma — och där butiker känner sig stödda. En ren leveranskedja gör hobbyn hälsosammare. Ett starkt socialt nätverk gör hobbyn varmare."
+      "text": "Vi vill att Hatake ska vara platsen där samlare känner sig hemma — och där butiker känner sig stödda. En ren leveranskedja gör hobbyn hälsosammare. Ett starkt socialt nätverk gör hobbyn varmare."
     },
     "team": {
       "title": "Vårt Team",
-      "subtitle": "Människorna bakom HatakeSocial",
+      "subtitle": "Människorna bakom Hatake",
       "ernst": {
         "name": "Ernst-William Hertz",
         "role": "Grundare",
-        "desc": "En aktiv Magic: The Gathering-spelare från 2007-2017, som återvände 2023. Den enda designern och visionären bakom HatakeSocial-plattformen."
+        "desc": "En aktiv Magic: The Gathering-spelare från 2007-2017, som återvände 2023. Den enda designern och visionären bakom Hatake-plattformen."
       },
       "patricia": {
         "name": "Patricia Andersson",

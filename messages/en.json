@@ -41,9 +41,10 @@
     "followUs": "Follow Us"
   },
   "About": {
-    "title": "About HatakeSocial",
+    "narrative": "Our Story and Vision",
+    "title": "About Hatake",
     "subtitle": "Sweden-based • TCG community • Wholesale supply chain",
-    "description": "HatakeSocial is our attempt to build two things at once — because they belong together. First: a chain of healthy suppliers that can move top-notch, high-quality TCG products across Europe. Reliable stock, clean product data, and fair logistics. Second: a social platform that pulls collectors together. A place to show your collection, find trades, message safely, and meet the people behind the binders. Our long-term goal is to strengthen local game shops too — with better discovery, clearer events, and eventually real partnerships that help the community grow offline.",
+    "description": "Hatake is our attempt to build two things at once — because they belong together. First: a chain of healthy suppliers that can move top-notch, high-quality TCG products across Europe. Reliable stock, clean product data, and fair logistics. Second: a social platform that pulls collectors together. A place to show your collection, find trades, message safely, and meet the people behind the binders. Our long-term goal is to strengthen local game shops too — with better discovery, clearer events, and eventually real partnerships that help the community grow offline.",
     "features": {
       "bulkImport": "Bulk import",
       "bulkImportDesc": "We source and import merch in bulk so stores can restock reliably and plan campaigns.",
@@ -53,7 +54,7 @@
       "creditLineDesc": "Are you a bit short on cash? Registered businesses are allowed to purchase on credit."
     },
     "building": {
-      "title": "What HatakeSocial is building",
+      "title": "What Hatake is building",
       "social": "A collector social network",
       "socialDesc": "Collections, messaging, trades, community posts, and profiles — built to help collectors find each other and feel safe doing business.",
       "shops": "Local game shops, amplified",
@@ -61,15 +62,15 @@
     },
     "vision": {
       "title": "The Vision",
-      "text": "We want HatakeSocial to be the place where collectors feel at home — and where stores feel supported. A clean supply chain makes the hobby healthier. A strong social network makes the hobby warmer."
+      "text": "We want Hatake to be the place where collectors feel at home — and where stores feel supported. A clean supply chain makes the hobby healthier. A strong social network makes the hobby warmer."
     },
     "team": {
       "title": "Our Team",
-      "subtitle": "The people behind HatakeSocial",
+      "subtitle": "The people behind Hatake",
       "ernst": {
         "name": "Ernst-William Hertz",
         "role": "Founder",
-        "desc": "An active Magic: The Gathering player from 2007-2017, returning in 2023. The sole designer and visionary behind the HatakeSocial platform."
+        "desc": "An active Magic: The Gathering player from 2007-2017, returning in 2023. The sole designer and visionary behind the Hatake platform."
       },
       "patricia": {
         "name": "Patricia Andersson",
