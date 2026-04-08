@@ -30,7 +30,9 @@
     "soldOut": "Slutsåld",
     "currentlyUnavailable": "För närvarande otillgänglig",
     "noDetails": "Ingen specifik information tillgänglig för denna artikel.",
-    "loadingCatalog": "Laddar katalog..."
+    "loadingCatalog": "Laddar katalog...",
+    "singlesDisclaimer": "⚠️ Notering: Magic och Pokémon singles skickas inte från vår huvudanläggning. Dessa varor levereras separat och kan ha längre leveranstider.",
+    "singlesDisclaimerDetail": "Magic och Pokémon singles levereras från en separat plats och kan ha längre leveranstider. Kontakta oss om du behöver specifik leveransinformation."
   },
   "Footer": {
     "companyName": "Hatake KB",

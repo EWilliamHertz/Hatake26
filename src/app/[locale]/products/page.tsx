@@ -99,6 +99,12 @@ function ShopContent() {
           ))}
         </div>
         
+        {(filter === 'MTG' || filter === 'MAGIC') && (
+          <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-yellow-800 text-sm font-medium">{t('singlesDisclaimer')}</p>
+          </div>
+        )}
+        
         {loading ? (
           <p className="text-slate-500">{t('loadingCatalog')}</p>
         ) : (
@@ -213,6 +219,12 @@ function ShopContent() {
                   {selectedProduct.description || t('noDetails')}
                 </p>
               </div>
+
+              {(selectedProduct.category === 'MTG' || selectedProduct.category === 'MAGIC') && (
+                <div className="mb-6 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <p className="text-yellow-800 text-xs font-medium">{t('singlesDisclaimerDetail')}</p>
+                </div>
+              )}
 
               <div className="mt-auto">
                 <div className="flex items-center gap-3 mb-4">

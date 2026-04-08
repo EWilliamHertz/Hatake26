@@ -30,7 +30,9 @@
     "soldOut": "Sold Out",
     "currentlyUnavailable": "Currently Unavailable",
     "noDetails": "No specific details provided for this item.",
-    "loadingCatalog": "Loading catalog..."
+    "loadingCatalog": "Loading catalog...",
+    "singlesDisclaimer": "⚠️ Note: Magic and Pokémon singles are not shipped from our main facility. These items are sourced separately and may have different delivery times.",
+    "singlesDisclaimerDetail": "Magic and Pokémon singles are supplied from a separate location and may have extended shipping times. Please contact us if you need specific delivery information."
   },
   "Footer": {
     "companyName": "Hatake KB",
