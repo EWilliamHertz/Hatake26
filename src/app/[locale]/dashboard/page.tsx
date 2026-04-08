@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import React from "react";
 
 // Define interfaces for TypeScript build safety
@@ -25,6 +26,7 @@ interface Inquiry {
 }
 
 export default async function UserDashboardPage() {
+  const t = await getTranslations("Dashboard");
   const session = await getServerSession(authOptions);
   
   if (!session?.user?.email) {
@@ -45,23 +47,23 @@ export default async function UserDashboardPage() {
   return (
     <div className="flex-grow bg-slate-50 py-12 px-4">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2 text-slate-900">My Dashboard</h1>
-        <p className="text-slate-600 mb-10">Welcome back, {session.user.email}. Track your orders and inquiries below.</p>
+        <h1 className="text-3xl font-bold mb-2 text-slate-900">{t('title')}</h1>
+        <p className="text-slate-600 mb-10">{t('welcome', { email: session.user.email })}</p>
 
         {/* Orders Section */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
-          <h2 className="text-xl font-bold mb-4 text-slate-800 border-b pb-2">My Orders (Payment Codes)</h2>
+          <h2 className="text-xl font-bold mb-4 text-slate-800 border-b pb-2">{t('ordersSection')}</h2>
           {orders.length === 0 ? (
-            <p className="text-slate-500 italic">You have no active orders.</p>
+            <p className="text-slate-500 italic">{t('noOrders')}</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
                   <tr className="text-slate-500 text-sm border-b">
-                    <th className="pb-2">Payment Code</th>
-                    <th className="pb-2">Date</th>
-                    <th className="pb-2">Total</th>
-                    <th className="pb-2">Status</th>
+                    <th className="pb-2">{t('paymentCode')}</th>
+                    <th className="pb-2">{t('date')}</th>
+                    <th className="pb-2">{t('total')}</th>
+                    <th className="pb-2">{t('status')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -85,17 +87,17 @@ export default async function UserDashboardPage() {
 
         {/* Inquiries Section */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <h2 className="text-xl font-bold mb-4 text-slate-800 border-b pb-2">My Wholesale Inquiries</h2>
+          <h2 className="text-xl font-bold mb-4 text-slate-800 border-b pb-2">{t('inquiriesSection')}</h2>
           {inquiries.length === 0 ? (
-            <p className="text-slate-500 italic">You have not submitted any wholesale requests.</p>
+            <p className="text-slate-500 italic">{t('noInquiries')}</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
                   <tr className="text-slate-500 text-sm border-b">
-                    <th className="pb-2">Date</th>
+                    <th className="pb-2">{t('date')}</th>
                     <th className="pb-2">Message Attached</th>
-                    <th className="pb-2">Total Value</th>
+                    <th className="pb-2">{t('total')}</th>
                   </tr>
                 </thead>
                 <tbody>
