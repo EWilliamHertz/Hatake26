@@ -190,6 +190,9 @@ export default function NavWrapper({ children }: { children: React.ReactNode }) 
                 <Link href={`/${currentLocale}/products?category=MTG`} onClick={() => setIsMobileMenuOpen(false)} className="text-slate-300 hover:text-amber-400 transition">
                   • MTG Singles
                 </Link>
+                <Link href={`/${currentLocale}/products?category=POKEMON`} onClick={() => setIsMobileMenuOpen(false)} className="text-slate-300 hover:text-amber-400 transition">
+                  • Pokémon Singles
+                </Link>
                 <Link href={`/${currentLocale}/products?category=SEALED`} onClick={() => setIsMobileMenuOpen(false)} className="text-slate-300 hover:text-amber-400 transition">
                   • Sealed Products
                 </Link>

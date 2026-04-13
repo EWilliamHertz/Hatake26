@@ -39,9 +39,9 @@ export default function PokemonCardsAdmin() {
     const fetchSets = async () => {
       try {
         setLoadingSets(true);
-        const response = await fetch('https://api.tcgdex.net/v2/en/sets');
+      const response = await fetch('https://api.tcgdex.net/v2/en/sets');
         const data = await response.json();
-        setSets(data.data || []);
+        setSets(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error('Failed to fetch sets:', err);
       } finally {
@@ -234,7 +234,7 @@ export default function PokemonCardsAdmin() {
                   >
                     <div className="aspect-[2.5/3.5] bg-slate-100 relative">
                       <Image
-                        src={card.imageUrl}
+                        src={card.imageUrl || '/placeholder.png'}
                         alt={card.name}
                         fill
                         className="object-cover"
@@ -259,7 +259,7 @@ export default function PokemonCardsAdmin() {
               <div className="mb-6">
                 <div className="aspect-[2.5/3.5] bg-slate-100 rounded-lg overflow-hidden mb-4">
                   <Image
-                    src={selectedCard.imageUrl}
+                    src={selectedCard.imageUrl || '/placeholder.png'}
                     alt={selectedCard.name}
                     width={200}
                     height={280}

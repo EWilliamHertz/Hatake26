@@ -351,7 +351,7 @@ export default function AdminProductsPage() {
               </tr>
             </thead>
             <tbody>
-              {products.map(product => (
+                {products.map(product => (
                 <tr key={product.id} className="border-b border-slate-100 hover:bg-slate-50">
                   <td className="p-4">
                     {product.imageUrl && <img src={product.imageUrl} alt={product.name} className="w-12 h-16 object-cover rounded shadow-sm" />}
