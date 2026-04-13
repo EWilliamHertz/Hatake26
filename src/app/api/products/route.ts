@@ -18,6 +18,8 @@ export async function GET() {
         edition: true,
         stock: true,
         price: true,
+        tcgdexId: true, // Added for Pokemon support
+        setCode: true,  // Added for Pokemon support
       }
     });
     return NextResponse.json(products);
@@ -40,7 +42,8 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { name, description, imageUrl, isSingle, scryfallId, edition, stock, price, category, images } = body;
+    // Destructure the new Pokemon fields from the request body
+    const { name, description, imageUrl, isSingle, scryfallId, tcgdexId, setCode, edition, stock, price, category, images } = body;
 
     // Validate required fields
     if (!name || !imageUrl) {
@@ -54,6 +57,8 @@ export async function POST(req: Request) {
         imageUrl, 
         isSingle: isSingle || false, 
         scryfallId: scryfallId || null, 
+        tcgdexId: tcgdexId || null, // Map to Prisma schema
+        setCode: setCode || null,   // Map to Prisma schema
         edition: edition || null, 
         stock: Number(stock) || 0, 
         price: Number(price || 0), 
