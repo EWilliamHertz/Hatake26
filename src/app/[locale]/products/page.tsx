@@ -88,7 +88,7 @@ function ShopContent() {
         </div>
         
         <div className="flex gap-4 mb-8 overflow-x-auto pb-2">
-          {['ALL', 'POKEMON', 'MTG', 'SEALED', 'MERCHANDISE'].map(cat => (
+          {['ALL', 'POKEMON', 'MTG', 'MAGIC', 'SEALED', 'MERCHANDISE'].map(cat => (
             <button 
               key={cat}
               onClick={() => setFilter(cat)}
@@ -97,6 +97,7 @@ function ShopContent() {
               {cat === 'ALL' ? t('filterAll') : 
                cat === 'POKEMON' ? 'Pokémon' : 
                cat === 'MTG' ? t('filterMtg') : 
+               cat === 'MAGIC' ? t('filterMagic') : 
                cat === 'SEALED' ? 'Sealed' : 
                t('merchandise')}
             </button>
