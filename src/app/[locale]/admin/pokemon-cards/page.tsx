@@ -120,8 +120,9 @@ export default function PokemonCardsAdmin() {
         },
         body: JSON.stringify({
           name: selectedCard.name,
-          imageUrl: selectedCard.imageUrl,
-          images: [selectedCard.imageUrl],
+          // Ensure we send a placeholder to the API if the TCGDex image is missing
+          imageUrl: selectedCard.imageUrl || '/placeholder.png',
+          images: [selectedCard.imageUrl || '/placeholder.png'],
           category: 'POKEMON',
           isSingle: true,
           tcgdexId: selectedCard.tcgdexId,
@@ -135,7 +136,8 @@ export default function PokemonCardsAdmin() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || 'Failed to add card');
+        // Look for exact API details first, then fallback to standard error
+        throw new Error(result.details || result.error || 'Failed to add card');
       }
 
       alert(`Card added successfully! ID: ${result.id}`);

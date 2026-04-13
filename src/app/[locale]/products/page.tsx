@@ -88,18 +88,22 @@ function ShopContent() {
         </div>
         
         <div className="flex gap-4 mb-8 overflow-x-auto pb-2">
-          {['ALL', 'MTG', 'MAGIC', 'SEALED', 'MERCHANDISE'].map(cat => (
+          {['ALL', 'POKEMON', 'MTG', 'SEALED', 'MERCHANDISE'].map(cat => (
             <button 
               key={cat}
               onClick={() => setFilter(cat)}
               className={`px-4 py-2 rounded shadow-sm transition whitespace-nowrap ${filter === cat ? 'bg-slate-800 text-white' : 'bg-white border text-slate-700 hover:bg-slate-100'}`}
             >
-              {cat === 'ALL' ? t('filterAll') : cat === 'MTG' ? t('filterMtg') : cat === 'MAGIC' ? t('filterMagic') : cat === 'SEALED' ? t('filterPokemon') : t('merchandise')}
+              {cat === 'ALL' ? t('filterAll') : 
+               cat === 'POKEMON' ? 'Pokémon' : 
+               cat === 'MTG' ? t('filterMtg') : 
+               cat === 'SEALED' ? 'Sealed' : 
+               t('merchandise')}
             </button>
           ))}
         </div>
         
-        {(filter === 'MTG' || filter === 'MAGIC') && (
+        {(filter === 'MTG' || filter === 'POKEMON') && (
           <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
             <p className="text-yellow-800 text-sm font-medium">{t('singlesDisclaimer')}</p>
           </div>
@@ -220,7 +224,7 @@ function ShopContent() {
                 </p>
               </div>
 
-              {(selectedProduct.category === 'MTG' || selectedProduct.category === 'MAGIC') && (
+              {(selectedProduct.category === 'MTG' || selectedProduct.category === 'POKEMON') && (
                 <div className="mb-6 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                   <p className="text-yellow-800 text-xs font-medium">{t('singlesDisclaimerDetail')}</p>
                 </div>
