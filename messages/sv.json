@@ -118,7 +118,9 @@
     "featuredProducts": "Utvalda Produkter",
     "featuredSubtitle": "Bläddra bland våra senaste tillskott och bästsäljare",
     "rareCards": "Sällsynta Kort",
-    "rareSubtitle": "Upptäck vår exklusiva Magic: The Gathering-samling"
+    "rareSubtitle": "Upptäck vår exklusiva Magic: The Gathering-samling",
+    "pokemonSingles": "Pokémon Singles",
+    "pokemonSubtitle": "Premium enskilda Pokémon-samlartkort"
   },
   "Wholesale": {
     "title": "Grossistbyggare",
@@ -172,5 +174,8 @@
     "pending": "Väntar",
     "confirmed": "Bekräftad",
     "completed": "Slutförd"
+  },
+  "Admin": {
+    "addPokemonCards": "Lägg till Pokémon-kort"
   }
 }

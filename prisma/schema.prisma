@@ -28,6 +28,8 @@ model Product {
   isSingle    Boolean  @default(false) 
   category    String   @default("SEALED") // "MTG", "POKEMON", "MERCHANDISE"
   scryfallId  String?  
+  tcgdexId    String?  // TCGDex card ID for Pokemon cards
+  setCode     String?  // Pokemon set code (e.g., \"sv04pt\")
   edition     String?
   stock       Int      @default(0)
   price       Float    @default(0) // Added price for checkout

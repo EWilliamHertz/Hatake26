@@ -11,10 +11,12 @@ interface Product {
   name: string;
   imageUrl: string;
   images: string[];
-  category: 'SEALED' | 'MERCHANDISE' | 'MTG';
+  category: 'SEALED' | 'MERCHANDISE' | 'MTG' | 'POKEMON';
   price: number;
   stock: number;
   isSingle?: boolean;
+  tcgdexId?: string;
+  setCode?: string;
 }
 
 // Main Carousel Component (for General/Sealed products)
@@ -230,6 +232,95 @@ function MTGCarousel({ products }: { products: Product[] }) {
   );
 }
 
+// Pokemon Singles Carousel
+function PokemonCarousel({ products }: { products: Product[] }) {
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const t = useTranslations();
+  const pathname = usePathname() || '';
+  const currentLocale = pathname.split('/')[1] || 'sv';
+
+  const filteredProducts = products.filter(
+    p => p.category === 'POKEMON' || (p.isSingle === true && p.category === 'POKEMON')
+  );
+
+  useEffect(() => {
+    if (!containerRef.current || filteredProducts.length === 0) return;
+
+    const interval = setInterval(() => {
+      if (containerRef.current) {
+        setScrollPosition(prev => {
+          const maxScroll = containerRef.current?.scrollWidth! - containerRef.current?.clientWidth!;
+          return (prev + 320) % (maxScroll + 320);
+        });
+      }
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [filteredProducts.length]);
+
+  if (filteredProducts.length === 0) return null;
+
+  return (
+    <section className="py-12 bg-gradient-to-r from-red-900 to-slate-900 text-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 mb-8">
+        <h2 className="text-3xl font-bold mb-2">Pokémon Singles</h2>
+        <p className="text-slate-300">Premium individual Pokémon trading cards</p>
+      </div>
+
+      <div
+        ref={containerRef}
+        className="flex gap-6 px-4 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide"
+        style={{
+          scrollBehavior: 'smooth',
+          transform: `translateX(-${scrollPosition}px)`,
+        }}
+      >
+        {filteredProducts.map(product => (
+          <div
+            key={product.id}
+            className="flex-shrink-0 w-64 snap-center group py-4"
+          >
+            <Link href={`/${currentLocale}/products?productId=${product.id}`}>
+              <div className="bg-transparent overflow-hidden cursor-pointer h-full flex flex-col items-center">
+                {/* TCG Card Ratio Container (approx 2.5 x 3.5) */}
+                <div className="relative w-full aspect-[2.5/3.5] rounded-xl overflow-hidden shadow-lg group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-300 border border-red-400/50">
+                  <Image
+                    src={product.imageUrl || '/placeholder.png'}
+                    alt={product.name}
+                    fill
+                    className="object-cover"
+                  />
+                  {product.stock === 0 && (
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                      <span className="text-white font-bold text-lg">{t('Shop.outOfStock')}</span>
+                    </div>
+                  )}
+                </div>
+                <div className="p-4 flex-grow flex flex-col justify-between">
+                  <div>
+                    <p className="text-sm text-slate-300 uppercase tracking-wide mb-2">Pokémon Single</p>
+                    <h3 className="text-lg font-bold text-white line-clamp-2 mb-2">{product.name}</h3>
+                    {product.setCode && (
+                      <p className="text-xs text-slate-400 mb-2">{product.setCode}</p>
+                    )}
+                  </div>
+                  <div className="flex justify-between items-end">
+                    <p className="text-xl font-bold text-amber-400">{Number(product.price || 0).toFixed(2)} SEK</p>
+                    <p className="text-sm text-slate-400">
+                      {product.stock > 0 ? `${product.stock} ${t('Shop.price')}` : t('Shop.outOfStock')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 // Featured Products Grid
 function FeaturedProducts({ products }: { products: Product[] }) {
   const t = useTranslations();
@@ -345,6 +436,9 @@ export default function Home() {
 
       {/* MTG Singles Carousel */}
       {!loading && !error && <MTGCarousel products={products} />}
+
+      {/* Pokémon Singles Carousel */}
+      {!loading && !error && <PokemonCarousel products={products} />}
 
       {/* Featured Products Grid */}
       {!loading && !error && <FeaturedProducts products={products} />}

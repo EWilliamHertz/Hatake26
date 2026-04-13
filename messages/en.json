@@ -118,7 +118,9 @@
     "featuredProducts": "Featured Products",
     "featuredSubtitle": "Browse our latest additions and bestsellers",
     "rareCards": "Rare Cards",
-    "rareSubtitle": "Discover our exclusive Magic: The Gathering collection"
+    "rareSubtitle": "Discover our exclusive Magic: The Gathering collection",
+    "pokemonSingles": "Pokémon Singles",
+    "pokemonSubtitle": "Premium individual Pokémon trading cards"
   },
   "Wholesale": {
     "title": "Wholesale Builder",
@@ -172,5 +174,8 @@
     "pending": "Pending",
     "confirmed": "Confirmed",
     "completed": "Completed"
+  },
+  "Admin": {
+    "addPokemonCards": "Add Pokémon Cards"
   }
 }
