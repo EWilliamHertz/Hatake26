@@ -10,11 +10,14 @@ export default createMiddleware({
 
 export const config = {
   matcher: [
-    // Enable a redirect to a matching locale at the root
-    '/',
-    // Match standard localized paths
+    // Match all pathnames except for the ones starting with:
+    // - api (API routes)
+    // - _next (Next.js internals)
+    // - _vercel (Vercel internals)
+    // - static files (e.g. /favicon.ico, /logo.png)
+    '/((?!api|_next|_vercel|.*\\..*).*)',
+    // Match the root and localized paths
     '/(sv|en)/:path*',
-    // Catch all other routes to append the locale, but exclude APIs and static files
-    '/((?!api|_next|_vercel|.*\\..*).*)'
+    '/'
   ]
 };
