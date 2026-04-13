@@ -95,10 +95,10 @@ function ShopContent() {
               className={`px-4 py-2 rounded shadow-sm transition whitespace-nowrap ${filter === cat ? 'bg-slate-800 text-white' : 'bg-white border text-slate-700 hover:bg-slate-100'}`}
             >
               {cat === 'ALL' ? t('filterAll') : 
-               cat === 'POKEMON' ? 'Pokémon' : 
+               cat === 'POKEMON' ? 'Pokémon Singles' : 
                cat === 'MTG' ? t('filterMtg') : 
                cat === 'MAGIC' ? t('filterMagic') : 
-               cat === 'SEALED' ? 'Sealed' : 
+               cat === 'SEALED' ? 'Sealed Pokémon' : 
                t('merchandise')}
             </button>
           ))}

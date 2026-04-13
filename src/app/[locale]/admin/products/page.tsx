@@ -256,9 +256,9 @@ export default function AdminProductsPage() {
                   <label className="block text-sm font-bold text-slate-700 mb-1">Category</label>
                   <p className="text-xs text-slate-500 mb-2">Used to filter items in the shop catalog.</p>
                 <select value={manualForm.category} onChange={e => setManualForm({...manualForm, category: e.target.value})} className="w-full border p-3 rounded bg-slate-50 focus:bg-white">
-                    <option value="SEALED">Sealed Pokémon Product</option>
-                    <option value="MAGIC">Sealed Magic Product</option>
-                    <option value="MERCHANDISE">General Merchandise (Sleeves, Binders)</option>
+                    <option value="SEALED">Sealed Pokémon</option>
+                    <option value="MAGIC">Sealed Magic</option>
+                    <option value="MERCHANDISE">Merchandise</option>
                   </select>
                 </div>
               </div>
@@ -359,10 +359,15 @@ export default function AdminProductsPage() {
                   <td className="p-4 font-medium text-slate-900">{product.name}</td>
                   <td className="p-4 text-slate-600">{product.price} SEK</td>
                   <td className="p-4 text-slate-600">
-                    <span className={`px-2 py-1 text-xs rounded-full ${product.isSingle ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}`}>
-                      {product.category}
-                    </span>
-                  </td>
+                    <span className={`px-2 py-1 text-xs rounded-full ${product.isSingle ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}`}>
+                      {product.category === 'POKEMON' ? 'Pokémon Singles' :
+                       product.category === 'MTG' ? 'Magic Singles' :
+                       product.category === 'SEALED' ? 'Sealed Pokémon' :
+                       product.category === 'MAGIC' ? 'Sealed Magic' :
+                       product.category === 'MERCHANDISE' ? 'Merchandise' : 
+                       product.category}
+                    </span>
+                  </td>
                   <td className="p-4 font-bold text-slate-900 text-lg">{product.stock}</td>
                   <td className="p-4 text-right">
                     <button onClick={() => openEditModal(product)} className="text-sm bg-slate-200 hover:bg-slate-300 text-slate-800 px-3 py-1 rounded transition">Edit</button>
@@ -410,10 +415,11 @@ export default function AdminProductsPage() {
               <div>
                 <label className="block text-sm font-bold text-slate-700 mb-1">Product Category</label>
                 <select value={editingProduct.category} onChange={e => setEditingProduct({...editingProduct, category: e.target.value})} className="w-full border p-2 rounded bg-slate-50 focus:bg-white">
-                  <option value="MTG">MTG Single</option>
+                  <option value="POKEMON">Pokémon Singles</option>
                   <option value="SEALED">Sealed Pokémon</option>
-                  <option value="MAGIC">Sealed Magic Product</option>
-                  <option value="MERCHANDISE">General Merchandise</option>
+                  <option value="MTG">Magic Singles</option>
+                  <option value="MAGIC">Sealed Magic</option>
+                  <option value="MERCHANDISE">Merchandise</option>
                 </select>
               </div>
 
