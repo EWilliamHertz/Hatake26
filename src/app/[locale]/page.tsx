@@ -11,7 +11,7 @@ interface Product {
   name: string;
   imageUrl: string;
   images: string[];
-  category: 'SEALED' | 'MERCHANDISE' | 'MTG' | 'POKEMON';
+  category: string; // Changed to string to allow 'POKEMON' and other categories without type conflicts
   price: number;
   stock: number;
   isSingle?: boolean;
