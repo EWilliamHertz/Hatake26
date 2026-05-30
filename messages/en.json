@@ -69,15 +69,10 @@
     "team": {
       "title": "Our Team",
       "subtitle": "The people behind Hatake",
-      "ernst": {
-        "name": "Ernst-William Hertz",
-        "role": "Founder",
-        "desc": "An active Magic: The Gathering player from 2007-2017, returning in 2023. The sole designer and visionary behind the Hatake platform."
-      },
       "patricia": {
         "name": "Patricia Andersson",
         "role": "CEO",
-        "desc": "Mother of Ernst-William, Patricia studied business economics and works as a prison officer. She proudly raised two Magic-playing children."
+        "desc": "Patricia studied business economics and works as a prison officer. She serves as CEO and is committed to building a strong, healthy community around trading cards."
       },
       "mark": {
         "name": "Mark Lange Jensen",

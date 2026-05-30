@@ -112,24 +112,8 @@ export default function About() {
           </div>
 
 
-          
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {/* Ernst-William */}
-            <div className="space-y-4">
-              <div className="relative w-full aspect-square mb-6 rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
-                <Image
-                  src="/team/ernst.jpeg"
-                  alt="Ernst-William Hertz"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <h3 className="text-2xl font-bold">{t('team.ernst.name')}</h3>
-              <p className="text-amber-500 font-medium uppercase tracking-wider text-sm">{t('team.ernst.role')}</p>
-              <p className="text-slate-400 leading-relaxed">{t('team.ernst.desc')}</p>
-            </div>
-
             {/* Patricia */}
             <div className="space-y-4">
               <div className="relative w-full aspect-square mb-6 rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">

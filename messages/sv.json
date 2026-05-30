@@ -69,15 +69,10 @@
     "team": {
       "title": "Vårt Team",
       "subtitle": "Människorna bakom Hatake",
-      "ernst": {
-        "name": "Ernst-William Hertz",
-        "role": "Grundare",
-        "desc": "En aktiv Magic: The Gathering-spelare från 2007-2017, som återvände 2023. Den enda designern och visionären bakom Hatake-plattformen."
-      },
       "patricia": {
         "name": "Patricia Andersson",
         "role": "VD",
-        "desc": "Mor till Ernst-William, Patricia studerade företagsekonomi och arbetar som kriminalvårdare. Hon fostrade stolt två Magic-spelande barn."
+        "desc": "Patricia studerade företagsekonomi och arbetar som kriminalvårdare. Hon fungerar som VD och är engagerad i att bygga en stark, hälsosam samling kring tradingkort."
       },
       "mark": {
         "name": "Mark Lange Jensen",
