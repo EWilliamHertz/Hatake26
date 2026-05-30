@@ -17,8 +17,8 @@ export async function POST(req: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    // Automatically make Ernst an admin
-    const role = email === "ernst@hatake.eu" ? "ADMIN" : "USER";
+    // Default role for new users
+    const role = "USER";
 
     const user = await prisma.user.create({
       data: {

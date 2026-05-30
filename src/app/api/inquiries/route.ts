@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     // 2. Send Email to Admins
     await resend.emails.send({
       from: "Acme <onboarding@resend.dev>", // Replace with your verified domain later
-      to: ["ernst@hatake.eu", "patricia@hatake.eu"],
+      to: ["patricia@hatake.eu"],
       subject: `New Wholesale Inquiry from ${customerName}`,
       html: `
         <h2>New Wholesale Inquiry</h2>
